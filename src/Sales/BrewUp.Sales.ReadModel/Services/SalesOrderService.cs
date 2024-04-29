@@ -14,11 +14,13 @@ public sealed class SalesOrderService(ILoggerFactory loggerFactory, [FromKeyedSe
 	: ServiceBase(loggerFactory, persister), ISalesOrderService
 {
 	public async Task CreateSalesOrderAsync(SalesOrderId salesOrderId, SalesOrderNumber salesOrderNumber, CustomerId customerId,
-		CustomerName customerName, OrderDate orderDate, IEnumerable<SalesOrderRowJson> rows, CancellationToken cancellationToken)
+		CustomerName customerName, OrderDate orderDate, PaymentDetailsJson paymentDetails, DeliveryAddressJson deliveryAddress,
+		IEnumerable<SalesOrderRowJson> rows, CancellationToken cancellationToken)
 	{
 		try
 		{
-			var salesOrder = SalesOrder.CreateSalesOrder(salesOrderId, salesOrderNumber, customerId, customerName, orderDate, rows);
+			var salesOrder = SalesOrder.CreateSalesOrder(salesOrderId, salesOrderNumber, customerId, customerName,
+				orderDate, paymentDetails, deliveryAddress, rows);
 			await Persister.InsertAsync(salesOrder, cancellationToken);
 		}
 		catch (Exception ex)

@@ -6,9 +6,9 @@ using Muflone.Messages.Events;
 
 namespace BrewUp.Sales.SharedKernel.Events;
 
-public sealed class SalesOrderCreated(SalesOrderId aggregateId, Guid commitId, SalesOrderNumber salesOrderNumber,
-	OrderDate orderDate, CustomerId customerId, CustomerName customerName,
-	IEnumerable<SalesOrderRowJson> rows) : DomainEvent(aggregateId, commitId)
+public sealed class SalesOrderFromPortalCreated(SalesOrderId aggregateId, Guid commitId, SalesOrderNumber salesOrderNumber,
+	OrderDate orderDate, CustomerId customerId, CustomerName customerName, PaymentDetailsJson paymentDetails,
+	DeliveryAddressJson deliveryAddress, IEnumerable<SalesOrderRowJson> rows) : DomainEvent(aggregateId, commitId)
 {
 	public readonly SalesOrderId SalesOrderId = aggregateId;
 	public readonly SalesOrderNumber SalesOrderNumber = salesOrderNumber;
@@ -16,6 +16,9 @@ public sealed class SalesOrderCreated(SalesOrderId aggregateId, Guid commitId, S
 
 	public readonly CustomerId CustomerId = customerId;
 	public readonly CustomerName CustomerName = customerName;
+	
+	public readonly PaymentDetailsJson PaymentDetails = paymentDetails;
+	public readonly DeliveryAddressJson DeliveryAddress = deliveryAddress;
 
 	public readonly IEnumerable<SalesOrderRowJson> Rows = rows;
 }

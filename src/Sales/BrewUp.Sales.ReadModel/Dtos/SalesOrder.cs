@@ -15,6 +15,9 @@ public class SalesOrder : EntityBase
 	public string CustomerName { get; private set; } = string.Empty;
 
 	public DateTime OrderDate { get; private set; } = DateTime.MinValue;
+	
+	public PaymentDetails PaymentDetails { get; private set; } = default!;
+	public DeliveryAddress DeliveryAddress { get; private set; } = default!;
 
 	public IEnumerable<SalesOrderRow> Rows { get; private set; } = Enumerable.Empty<SalesOrderRow>();
 
@@ -24,7 +27,8 @@ public class SalesOrder : EntityBase
 	{ }
 
 	public static SalesOrder CreateSalesOrder(SalesOrderId salesOrderId, SalesOrderNumber salesOrderNumber, CustomerId customerId,
-		CustomerName customerName, OrderDate orderDate, IEnumerable<SalesOrderRowJson> rows) => new(salesOrderId.Value.ToString(),
+		CustomerName customerName, OrderDate orderDate, PaymentDetailsJson paymentDetails, DeliveryAddressJson deliveryAddress, 
+		IEnumerable<SalesOrderRowJson> rows) => new(salesOrderId.Value.ToString(),
 		salesOrderNumber.Value, customerId.Value.ToString(), customerName.Value, orderDate.Value, rows.ToReadModelEntities());
 
 	private SalesOrder(string salesOrderId, string salesOrderNumber, string customerId, string customerName, DateTime orderDate, IEnumerable<SalesOrderRow> rows)
@@ -41,5 +45,6 @@ public class SalesOrder : EntityBase
 
 	public void CompleteOrder() => Status = Shared.Helpers.Status.Completed.Name;
 
-	public SalesOrderJson ToJson() => new(Id, OrderNumber, Guid.Parse(CustomerId), CustomerName, OrderDate, Rows.Select(r => r.ToJson));
+	public SalesOrderJson ToJson() => new(Id, OrderNumber, Guid.Parse(CustomerId), CustomerName, OrderDate,
+		PaymentDetails.ToJson(), DeliveryAddress.ToJson(), Rows.Select(r => r.ToJson));
 }

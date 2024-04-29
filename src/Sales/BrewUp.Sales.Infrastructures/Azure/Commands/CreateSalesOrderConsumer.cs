@@ -11,7 +11,7 @@ namespace BrewUp.Sales.Infrastructures.Azure.Commands;
 public sealed class CreateSalesOrderConsumer(IRepository repository,
 		AzureServiceBusConfiguration azureServiceBusConfiguration,
 		ILoggerFactory loggerFactory)
-	: CommandConsumerBase<CreateSalesOrder>(azureServiceBusConfiguration, loggerFactory)
+	: CommandConsumerBase<CreateSalesOrderFromPortal>(azureServiceBusConfiguration, loggerFactory)
 {
-	protected override ICommandHandlerAsync<CreateSalesOrder> HandlerAsync { get; } = new CreateSalesOrderCommandHandler(repository, loggerFactory);
+	protected override ICommandHandlerAsync<CreateSalesOrderFromPortal> HandlerAsync { get; } = new CreateSalesOrderCommandHandler(repository, loggerFactory);
 }

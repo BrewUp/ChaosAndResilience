@@ -9,14 +9,14 @@ using Muflone.Transport.Azure.Models;
 
 namespace BrewUp.Sales.Infrastructures.Azure.Events;
 
-public sealed class SalesOrderCreatedConsumer : DomainEventConsumerBase<SalesOrderCreated>
+public sealed class SalesOrderCreatedConsumer : DomainEventConsumerBase<SalesOrderFromPortalCreated>
 {
-	protected override IEnumerable<IDomainEventHandlerAsync<SalesOrderCreated>> HandlersAsync { get; }
+	protected override IEnumerable<IDomainEventHandlerAsync<SalesOrderFromPortalCreated>> HandlersAsync { get; }
 
 	public SalesOrderCreatedConsumer(ISalesOrderService salesOrderService, IEventBus eventBus,
 		AzureServiceBusConfiguration azureServiceBusConfiguration, ILoggerFactory loggerFactory) : base(azureServiceBusConfiguration, loggerFactory)
 	{
-		HandlersAsync = new List<DomainEventHandlerAsync<SalesOrderCreated>>
+		HandlersAsync = new List<DomainEventHandlerAsync<SalesOrderFromPortalCreated>>
 		{
 			new SalesOrderCreatedEventHandlerAsync(loggerFactory, salesOrderService)
 		};

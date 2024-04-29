@@ -12,7 +12,7 @@ using Muflone.SpecificationTests;
 
 namespace BrewUp.Sales.Domain.Tests.Entities;
 
-public sealed class CreateSalesOrderSuccessfully : CommandSpecification<CreateSalesOrder>
+public sealed class CreateSalesOrderFromPortalSuccessfully : CommandSpecification<CreateSalesOrderFromPortal>
 {
 	private readonly SalesOrderId _salesOrderId = new(Guid.NewGuid());
 	private readonly SalesOrderNumber _salesOrderNumber = new("20240315-1500");
@@ -23,6 +23,11 @@ public sealed class CreateSalesOrderSuccessfully : CommandSpecification<CreateSa
 	private readonly CustomerId _customerId = new(Guid.NewGuid());
 	private readonly CustomerName _customerName = new("Muflone");
 
+	private readonly PaymentDetailsJson _paymentDetails =
+		new("1234567890123456", DateTime.UtcNow.AddYears(1), "123");
+	private readonly DeliveryAddressJson _deliveryAddress =
+		new("Home", "1234 Main St", "Springfield", "IL", "62704", "555-555-5555");
+	
 	private readonly IEnumerable<SalesOrderRowJson> _rows = Enumerable.Empty<SalesOrderRowJson>();
 
 	protected override IEnumerable<DomainEvent> Given()
@@ -30,18 +35,20 @@ public sealed class CreateSalesOrderSuccessfully : CommandSpecification<CreateSa
 		yield break;
 	}
 
-	protected override CreateSalesOrder When()
+	protected override CreateSalesOrderFromPortal When()
 	{
-		return new CreateSalesOrder(_salesOrderId, _correlationId, _salesOrderNumber, _orderDate, _customerId, _customerName, _rows);
+		return new CreateSalesOrderFromPortal(_salesOrderId, _correlationId, _salesOrderNumber, _orderDate, _customerId,
+			_customerName, _paymentDetails, _deliveryAddress, _rows);
 	}
 
-	protected override ICommandHandlerAsync<CreateSalesOrder> OnHandler()
+	protected override ICommandHandlerAsync<CreateSalesOrderFromPortal> OnHandler()
 	{
 		return new CreateSalesOrderCommandHandler(Repository, new NullLoggerFactory());
 	}
 
 	protected override IEnumerable<DomainEvent> Expect()
 	{
-		yield return new SalesOrderCreated(_salesOrderId, _correlationId, _salesOrderNumber, _orderDate, _customerId, _customerName, _rows);
+		yield return new SalesOrderFromPortalCreated(_salesOrderId, _correlationId, _salesOrderNumber, _orderDate,
+			_customerId, _customerName, _paymentDetails, _deliveryAddress, _rows);
 	}
 }

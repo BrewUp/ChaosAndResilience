@@ -18,9 +18,9 @@ public sealed class SalesFacade(IServiceBus serviceBus,
 		if (body.SalesOrderId.Equals(string.Empty))
 			body = body with { SalesOrderId = Guid.NewGuid().ToString() };
 
-		CreateSalesOrder command = new(new SalesOrderId(new Guid(body.SalesOrderId)),
-						Guid.NewGuid(), new SalesOrderNumber(body.SalesOrderNumber), new OrderDate(body.OrderDate),
-									new CustomerId(body.CustomerId), new CustomerName(body.CustomerName), body.Rows);
+		CreateSalesOrderFromPortal command = new(new SalesOrderId(new Guid(body.SalesOrderId)), Guid.NewGuid(),
+			new SalesOrderNumber(body.SalesOrderNumber), new OrderDate(body.OrderDate), new CustomerId(body.CustomerId),
+			new CustomerName(body.CustomerName), body.PaymentDetails, body.DeliveryAddress, body.Rows);
 		await serviceBus.SendAsync(command, cancellationToken);
 
 		return body.SalesOrderId;

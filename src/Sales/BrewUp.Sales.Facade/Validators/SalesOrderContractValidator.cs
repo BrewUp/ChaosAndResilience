@@ -13,6 +13,9 @@ public class SalesOrderContractValidator : AbstractValidator<SalesOrderJson>
 		RuleFor(v => v.CustomerName).NotEmpty();
 		RuleFor(v => v.OrderDate).GreaterThan(DateTime.MinValue);
 
+		RuleFor(v => v.PaymentDetails).SetValidator(new PaymentDetailsValidator());
+		RuleFor(v => v.DeliveryAddress).SetValidator(new DeliveryAddressValidator());
+
 		RuleForEach(v => v.Rows).SetValidator(new SalesOrderRowValidator());
 	}
 }

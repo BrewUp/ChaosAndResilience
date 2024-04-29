@@ -6,9 +6,9 @@ using Muflone.Messages.Commands;
 
 namespace BrewUp.Sales.SharedKernel.Commands;
 
-public class CreateSalesOrder(SalesOrderId aggregateId, Guid commitId, SalesOrderNumber salesOrderNumber,
-		OrderDate orderDate, CustomerId customerId, CustomerName customerName,
-		IEnumerable<SalesOrderRowJson> rows)
+public class CreateSalesOrderFromPortal(SalesOrderId aggregateId, Guid commitId, SalesOrderNumber salesOrderNumber,
+		OrderDate orderDate, CustomerId customerId, CustomerName customerName, PaymentDetailsJson paymentDetails,
+		DeliveryAddressJson deliveryAddress, IEnumerable<SalesOrderRowJson> rows)
 	: Command(aggregateId, commitId)
 {
 	public readonly SalesOrderId SalesOrderId = aggregateId;
@@ -17,6 +17,9 @@ public class CreateSalesOrder(SalesOrderId aggregateId, Guid commitId, SalesOrde
 
 	public readonly CustomerId CustomerId = customerId;
 	public readonly CustomerName CustomerName = customerName;
+	
+	public readonly PaymentDetailsJson PaymentDetails = paymentDetails;
+	public readonly DeliveryAddressJson DeliveryAddress = deliveryAddress;
 
 	public readonly IEnumerable<SalesOrderRowJson> Rows = rows;
 }
