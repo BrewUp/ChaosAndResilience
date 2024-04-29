@@ -26,18 +26,27 @@ public class SalesOrder : EntityBase
 	protected SalesOrder()
 	{ }
 
-	public static SalesOrder CreateSalesOrder(SalesOrderId salesOrderId, SalesOrderNumber salesOrderNumber, CustomerId customerId,
-		CustomerName customerName, OrderDate orderDate, PaymentDetailsJson paymentDetails, DeliveryAddressJson deliveryAddress, 
+	public static SalesOrder CreateSalesOrder(SalesOrderId salesOrderId, SalesOrderNumber salesOrderNumber,
+		CustomerId customerId,
+		CustomerName customerName, OrderDate orderDate, PaymentDetailsJson paymentDetails,
+		DeliveryAddressJson deliveryAddress,
 		IEnumerable<SalesOrderRowJson> rows) => new(salesOrderId.Value.ToString(),
-		salesOrderNumber.Value, customerId.Value.ToString(), customerName.Value, orderDate.Value, rows.ToReadModelEntities());
+		salesOrderNumber.Value, customerId.Value.ToString(), customerName.Value, orderDate.Value, paymentDetails,
+		deliveryAddress, rows.ToReadModelEntities());
 
-	private SalesOrder(string salesOrderId, string salesOrderNumber, string customerId, string customerName, DateTime orderDate, IEnumerable<SalesOrderRow> rows)
+	private SalesOrder(string salesOrderId, string salesOrderNumber, string customerId, string customerName,
+		DateTime orderDate, PaymentDetailsJson paymentDetails, DeliveryAddressJson deliveryAddress,
+		IEnumerable<SalesOrderRow> rows)
 	{
 		Id = salesOrderId;
 		OrderNumber = salesOrderNumber;
 		CustomerId = customerId;
 		CustomerName = customerName;
 		OrderDate = orderDate;
+		
+		PaymentDetails = paymentDetails.ToPaymentReadModel();
+		DeliveryAddress = deliveryAddress.ToDeliveryAdddressReadModel();
+		
 		Rows = rows;
 
 		Status = Shared.Helpers.Status.Created.Name;

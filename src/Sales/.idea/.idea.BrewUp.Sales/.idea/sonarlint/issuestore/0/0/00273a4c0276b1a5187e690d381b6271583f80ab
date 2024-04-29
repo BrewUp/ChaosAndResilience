@@ -1,0 +1,8 @@
+
+’csharpsquid:S6667#"JLogging in a catch clause should pass the caught exception as a parameter.(ïª•ŒüÿÿÿÿJ$cdc3bba5-c159-4a62-b1cc-fc76bf7214ee
+’csharpsquid:S66675"JLogging in a catch clause should pass the caught exception as a parameter.(ƒæ¥•ûÿÿÿÿJ$9cc612c0-98ee-4456-ad65-b8741e7b92dd
+Œcsharpsquid:S6667F"JLogging in a catch clause should pass the caught exception as a parameter.(ŸøJ$a572abd5-a45b-4ca9-891c-26f744eb6a1d
+csharpsquid:S6667X"JLogging in a catch clause should pass the caught exception as a parameter.(£˜úğJ$743e8d7e-a2da-4571-b460-c4d923aa7432
+„csharpsquid:S26295"<Don't use string interpolation in logging message templates.(ƒæ¥•ûÿÿÿÿJ$65089fe2-6a4a-4735-9c5f-fdf9a605ada3
+~csharpsquid:S2629F"<Don't use string interpolation in logging message templates.(ŸøJ$9af442c8-7994-4b72-be9d-996c7d846169
+csharpsquid:S2629X"<Don't use string interpolation in logging message templates.(£˜úğJ$baee2960-b9b7-4012-9dce-8ff712a45283

@@ -75,3 +75,19 @@ L
 BrewUp.Sales.Rest/Program.cs,8\9\8964fdbb023d324fc1b62806f833fe56509d8dcc
 ^
 .BrewUp.Sales.Rest/appsettings.Development.json,8\d\8d4840aa3e30265130fedbce3c754baaf2c87a75
+d
+4BrewUp.Sales.SharedKernel/Events/SalesOrderClosed.cs,0\9\0932cf06ee18fe1041a0b4e8a1515a0f7308b474
+R
+"BrewUp.Sales.Rest/appsettings.json,c\5\c5e5be3968e61dafd02f337a4edd2cbb010f5ce2
+e
+5BrewUp.Sales.Infrastructures/MongoDb/MongoDbHelper.cs,9\5\9583b3a88036188b41de7ae00b7ab2ef4df27680
+b
+2BrewUp.Sales.ReadModel/Helpers/ReadModelHelpers.cs,0\8\08b80e4b79510c1acd61488146a98d69ff5c067a
+k
+;BrewUp.Sales.Infrastructures/Azure/AzureServiceBusHelper.cs,e\e\eebb8fbb4ea5be98a2b5e8fabfed1f247d9d2187
+g
+7BrewUp.Sales.Infrastructures/MongoDb/MongoDbSettings.cs,a\d\adf220398b4d2e1e4c14d204bf0fad1a91e93c89
+~
+NBrewUp.Sales.Infrastructures/MongoDb/Readmodel/EventStorePositionRepository.cs,1\0\108b785177390c95185755b1ad2aa51c91d3fa81
+f
+6BrewUp.Sales.Infrastructures/MongoDb/SalesPersister.cs,0\0\00273a4c0276b1a5187e690d381b6271583f80ab

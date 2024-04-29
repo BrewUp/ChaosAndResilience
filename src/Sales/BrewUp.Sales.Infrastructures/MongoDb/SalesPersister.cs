@@ -14,7 +14,7 @@ public class SalesPersister : IPersister
 		ILoggerFactory loggerFactory)
 	{
 		_logger = loggerFactory.CreateLogger(GetType());
-		_database = mongoClient.GetDatabase("Sales");
+		_database = mongoClient.GetDatabase("BrewUp-Sales");
 	}
 
 	public async Task<T> GetByIdAsync<T>(string id, CancellationToken cancellationToken) where T : EntityBase
