@@ -91,3 +91,7 @@ g
 NBrewUp.Sales.Infrastructures/MongoDb/Readmodel/EventStorePositionRepository.cs,1\0\108b785177390c95185755b1ad2aa51c91d3fa81
 f
 6BrewUp.Sales.Infrastructures/MongoDb/SalesPersister.cs,0\0\00273a4c0276b1a5187e690d381b6271583f80ab
+Z
+*BrewUp.Sales.Rest/Modules/MetricsModule.cs,2\c\2c6efd944648d9b1a729a93c59c1237c772c6d3f
+^
+.BrewUp.Sales.Rest/Modules/RateLimiterModule.cs,f\1\f1916f98d3352add63a86eb4e55fc0d601e401bc
