@@ -1,4 +1,5 @@
 ﻿using BrewUp.Sales.Facade.Validators;
+using BrewUp.Shared.Configurations;
 using BrewUp.Shared.Contracts;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
@@ -22,12 +23,13 @@ public static class SalesEndpoints
 		group.MapGet("/", HandleGetOrders)
 			.Produces(StatusCodes.Status400BadRequest)
 			.Produces(StatusCodes.Status200OK)
+			.RequireRateLimiting(RateLimiting.CurrentRateLimiter)
 			.WithName("GetSalesOrders");
 
 		return endpoints;
 	}
 
-	public static async Task<IResult> HandleCreateOrder(
+	private static async Task<IResult> HandleCreateOrder(
 		ISalesFacade salesUpFacade,
 		IValidator<SalesOrderJson> validator,
 		ValidationHandler validationHandler,
@@ -43,7 +45,7 @@ public static class SalesEndpoints
 		return Results.Created(new Uri($"/v1/sales/{salesOrderId}", UriKind.Relative), salesOrderId);
 	}
 
-	public static async Task<IResult> HandleGetOrders(
+	private static async Task<IResult> HandleGetOrders(
 		ISalesFacade salesUpFacade,
 		CancellationToken cancellationToken)
 	{

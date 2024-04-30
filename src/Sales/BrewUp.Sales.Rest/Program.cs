@@ -12,6 +12,8 @@ app.UseCors("CorsPolicy");
 // Register endpoints
 app.MapEndpoints();
 
+app.UseRateLimiter();
+
 // Configure the HTTP request pipeline.
 app.UseSwagger(s =>
 {

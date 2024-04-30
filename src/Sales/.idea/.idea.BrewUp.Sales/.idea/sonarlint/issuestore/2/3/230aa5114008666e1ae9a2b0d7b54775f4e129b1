@@ -1,0 +1,3 @@
+
+“csharpsquid:S1104"DMake this field 'private' and encapsulate it in a 'public' property.(§ªÄœıÿÿÿÿ8°£÷ò1J$c1103d34-3ae7-4291-9048-9329a6bb86f3
+csharpsquid:S2223"OChange the visibility of 'CurrentRateLimiter' or make it 'const' or 'readonly'.(§ªÄœıÿÿÿÿ8±£÷ò1J$76e01025-58e9-4619-bedc-e38c6b5239dc

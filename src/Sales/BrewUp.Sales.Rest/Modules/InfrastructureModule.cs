@@ -13,7 +13,7 @@ public class InfrastructureModule : IModule
 	{
 		var mongoDbSettings = builder.Configuration.GetSection("BrewUp:MongoDbSettings")
 			.Get<MongoDbSettings>()!;
-
+		
 		var rabbitMqSettings = builder.Configuration.GetSection("BrewUp:AzureServiceBus")
 			.Get<AzureServiceBusSettings>()!;
 

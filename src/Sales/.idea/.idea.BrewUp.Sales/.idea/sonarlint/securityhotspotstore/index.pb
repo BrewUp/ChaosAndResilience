@@ -95,3 +95,13 @@ Z
 *BrewUp.Sales.Rest/Modules/MetricsModule.cs,2\c\2c6efd944648d9b1a729a93c59c1237c772c6d3f
 ^
 .BrewUp.Sales.Rest/Modules/RateLimiterModule.cs,f\1\f1916f98d3352add63a86eb4e55fc0d601e401bc
+\
+,BrewUp.Sales.Rest/Modules/RateLimitModule.cs,a\4\a421e2c2862baf2ac25d37ea83197b7c1f7f9a6c
+Z
+*BrewUp.Sales.Rest/BrewUp.Sales.Rest.csproj,c\e\ce587b10e673a82909cb89ec72b519c99b88fbc8
+\
+,BrewUp.Shared/Configurations/RateLimiting.cs,2\3\230aa5114008666e1ae9a2b0d7b54775f4e129b1
+a
+1BrewUp.Sales.Rest/Modules/InfrastructureModule.cs,b\0\b01d2acaee86e786853289824d02b2c3c060345e
+]
+-BrewUp.Sales.Rest/Modules/ModuleExtensions.cs,2\3\2354be5cba358e74b63bed99406114c4c5f7992e
