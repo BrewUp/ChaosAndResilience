@@ -27,7 +27,7 @@ public static class SalesEndpoints
 		return endpoints;
 	}
 
-	public static async Task<IResult> HandleCreateOrder(
+	private static async Task<IResult> HandleCreateOrder(
 		ISalesFacade salesUpFacade,
 		IValidator<SalesOrderJson> validator,
 		ValidationHandler validationHandler,
@@ -43,7 +43,7 @@ public static class SalesEndpoints
 		return Results.Created(new Uri($"/v1/sales/{salesOrderId}", UriKind.Relative), salesOrderId);
 	}
 
-	public static async Task<IResult> HandleGetOrders(
+	private static async Task<IResult> HandleGetOrders(
 		ISalesFacade salesUpFacade,
 		CancellationToken cancellationToken)
 	{

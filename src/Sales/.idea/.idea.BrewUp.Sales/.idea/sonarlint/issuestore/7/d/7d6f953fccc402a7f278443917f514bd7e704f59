@@ -1,5 +1,5 @@
 
- csharpsquid:S2139"XEither log this exception and handle it, or rethrow it with some contextual information.(´‚¤–øÿÿÿÿJ$22f70be8-bf2d-4044-94fc-cad695b8ca63
- csharpsquid:S2139+"XEither log this exception and handle it, or rethrow it with some contextual information.(´‚¤–øÿÿÿÿJ$14a7f437-5bc3-4e2a-8dc3-79f0a22f6293
- csharpsquid:S2139:"XEither log this exception and handle it, or rethrow it with some contextual information.(´‚¤–øÿÿÿÿJ$0c11fa63-1f28-4652-bc12-18242442df4d
-–csharpsquid:S927"TRename parameter 'customerName' to 'customeName' to match the interface declaration.(ª¦¶J$fe3c6ebc-251e-4e60-8447-789821ddb79a
+ csharpsquid:S2139"XEither log this exception and handle it, or rethrow it with some contextual information.(´‚¤–øÿÿÿÿJ$2a70e18d-d4fa-4e5b-a151-82522120ee4c
+ csharpsquid:S2139+"XEither log this exception and handle it, or rethrow it with some contextual information.(´‚¤–øÿÿÿÿJ$5d3f56d9-44d1-4b34-97ad-ed18018af4bc
+ csharpsquid:S2139:"XEither log this exception and handle it, or rethrow it with some contextual information.(´‚¤–øÿÿÿÿJ$b123ed61-e4b8-4d21-b0af-b4af411fe4b3
+–csharpsquid:S927"TRename parameter 'customerName' to 'customeName' to match the interface declaration.(ª¦¶J$c3573c8a-d1a0-4497-a7ab-4e71c75b9a26
