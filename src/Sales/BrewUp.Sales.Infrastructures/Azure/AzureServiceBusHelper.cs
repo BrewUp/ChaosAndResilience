@@ -1,6 +1,8 @@
 ﻿using BrewUp.Sales.Infrastructures.Azure.Commands;
 using BrewUp.Sales.Infrastructures.Azure.Events;
+using BrewUp.Sales.ReadModel.Dtos;
 using BrewUp.Sales.ReadModel.Services;
+using BrewUp.Shared.ReadModel;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Muflone;
@@ -35,13 +37,21 @@ public static class AzureServiceBusHelper
 				serviceProvider.GetRequiredService<IEventBus>(),
 				azureServiceBusConfiguration, loggerFactory),
 
-			new AvailabilityUpdatedForNotificationConsumer(serviceProvider.GetRequiredService<IServiceBus>(),
+			new AvailabilityUpdatedForNotificationConsumer(serviceProvider.GetRequiredService<IQueries<Beers>>(),
+				serviceProvider.GetRequiredService<IQueries<Availability>>(),
+				serviceProvider.GetRequiredService<IServiceBus>(),
 				azureServiceBusConfiguration,
 				loggerFactory),
 
+			new CreateAvailabilityDueToWarehousesNotificationConsumer(repository, azureServiceBusConfiguration,
+				loggerFactory),
 			new UpdateAvailabilityDueToWarehousesNotificationConsumer(repository, azureServiceBusConfiguration,
 				loggerFactory),
 			new AvailabilityUpdatedDueToWarehousesNotificationConsumer(serviceProvider.GetRequiredService<IAvailabilityService>(),
+				azureServiceBusConfiguration, loggerFactory),
+			
+			new CreateBeerDueToAvailabilityLoadedConsumer(repository, azureServiceBusConfiguration, loggerFactory),
+			new BeerDueToAvailabilityLoadedCreatedConsumer(serviceProvider.GetRequiredService<IBeersService>(), 
 				azureServiceBusConfiguration, loggerFactory)
 		});
 
