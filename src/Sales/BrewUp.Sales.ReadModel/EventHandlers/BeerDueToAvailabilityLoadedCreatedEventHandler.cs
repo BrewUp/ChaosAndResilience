@@ -9,6 +9,8 @@ public class BeerDueToAvailabilityLoadedCreatedEventHandler
 {
     public override async Task HandleAsync(BeerDueToAvailabilityLoadedCreated @event, CancellationToken cancellationToken = new())
     {
+        cancellationToken.ThrowIfCancellationRequested();
+        
         try
         {
             await beersService.CreateBeerAsync(@event.BeerId, @event.BeerName, cancellationToken);

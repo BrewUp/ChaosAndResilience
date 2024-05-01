@@ -42,7 +42,9 @@ public static class SalesEndpoints
 
 		var salesOrderId = await salesUpFacade.CreateOrderAsync(body, cancellationToken);
 
-		return Results.Created(new Uri($"/v1/sales/{salesOrderId}", UriKind.Relative), salesOrderId);
+		return string.IsNullOrWhiteSpace(salesOrderId) 
+			? Results.Ok("No Beers Available") 
+			: Results.Created(new Uri($"/v1/sales/{salesOrderId}", UriKind.Relative), salesOrderId);
 	}
 
 	private static async Task<IResult> HandleGetOrders(

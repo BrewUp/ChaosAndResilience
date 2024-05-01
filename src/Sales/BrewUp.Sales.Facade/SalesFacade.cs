@@ -7,16 +7,29 @@ using BrewUp.Shared.DomainIds;
 using BrewUp.Shared.Entities;
 using BrewUp.Shared.ReadModel;
 using Muflone.Persistence;
+using Availability = BrewUp.Sales.ReadModel.Dtos.Availability;
 
 namespace BrewUp.Sales.Facade;
 
 public sealed class SalesFacade(IServiceBus serviceBus,
-	IQueries<SalesOrder> orderQueries) : ISalesFacade
+	IQueries<SalesOrder> orderQueries,
+	IQueries<Availability> availabilityQueries) : ISalesFacade
 {
 	public async Task<string> CreateOrderAsync(SalesOrderJson body, CancellationToken cancellationToken)
 	{
 		if (body.SalesOrderId.Equals(string.Empty))
 			body = body with { SalesOrderId = Guid.NewGuid().ToString() };
+
+		var beersAvailable = new List<SalesOrderRowJson>();
+		foreach (var row in body.Rows)
+		{
+			var availability = await availabilityQueries.GetByIdAsync(row.BeerId.ToString(), cancellationToken);
+			if (availability != null && !string.IsNullOrWhiteSpace(availability.BeerName) && availability.Quantity.Value >= row.Quantity.Value)
+				beersAvailable.Add(row);
+		}
+		
+		if (!beersAvailable.Any())
+			return String.Empty;
 
 		CreateSalesOrderFromPortal command = new(new SalesOrderId(new Guid(body.SalesOrderId)), Guid.NewGuid(),
 			new SalesOrderNumber(body.SalesOrderNumber), new OrderDate(body.OrderDate), new CustomerId(body.CustomerId),

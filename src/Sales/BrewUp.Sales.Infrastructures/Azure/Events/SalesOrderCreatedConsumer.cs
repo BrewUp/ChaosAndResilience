@@ -18,7 +18,8 @@ public sealed class SalesOrderCreatedConsumer : DomainEventConsumerBase<SalesOrd
 	{
 		HandlersAsync = new List<DomainEventHandlerAsync<SalesOrderFromPortalCreated>>
 		{
-			new SalesOrderCreatedEventHandlerAsync(loggerFactory, salesOrderService)
+			new SalesOrderCreatedEventHandlerAsync(loggerFactory, salesOrderService),
+			new SalesOrderCreatedForWarehousesEventHandlerAsync(loggerFactory, eventBus)
 		};
 	}
 }
