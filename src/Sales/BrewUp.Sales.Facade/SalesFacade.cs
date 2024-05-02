@@ -20,16 +20,10 @@ public sealed class SalesFacade(IServiceBus serviceBus,
 		if (body.SalesOrderId.Equals(string.Empty))
 			body = body with { SalesOrderId = Guid.NewGuid().ToString() };
 
-		var beersAvailable = new List<SalesOrderRowJson>();
-		foreach (var row in body.Rows)
-		{
-			var availability = await availabilityQueries.GetByIdAsync(row.BeerId.ToString(), cancellationToken);
-			if (availability != null && !string.IsNullOrWhiteSpace(availability.BeerName) && availability.Quantity.Value >= row.Quantity.Value)
-				beersAvailable.Add(row);
-		}
-		
-		if (!beersAvailable.Any())
-			return String.Empty;
+		// var beersAvailable = await GetSalesOrderRows(body, cancellationToken);
+		//
+		// if (!beersAvailable.Any())
+		// 	return string.Empty;
 
 		CreateSalesOrderFromPortal command = new(new SalesOrderId(new Guid(body.SalesOrderId)), Guid.NewGuid(),
 			new SalesOrderNumber(body.SalesOrderNumber), new OrderDate(body.OrderDate), new CustomerId(body.CustomerId),
@@ -37,6 +31,21 @@ public sealed class SalesFacade(IServiceBus serviceBus,
 		await serviceBus.SendAsync(command, cancellationToken);
 
 		return body.SalesOrderId;
+	}
+
+	private async Task<List<SalesOrderRowJson>> GetSalesOrderRows(SalesOrderJson body, CancellationToken cancellationToken)
+	{
+		var beersAvailable = new List<SalesOrderRowJson>();
+		var availabilities = await availabilityQueries.GetByFilterAsync(null, 0, 10, cancellationToken);
+		
+		foreach (var row in body.Rows)
+		{
+			var beerAvailability = availabilities.Results.FirstOrDefault(b => b.BeerId.Equals(row.BeerId.ToString()));
+			if (beerAvailability != null && beerAvailability.Quantity.Value >= row.Quantity.Value)
+				beersAvailable.Add(row);
+		}
+
+		return beersAvailable;
 	}
 
 	public async Task<PagedResult<SalesOrderJson>> GetOrdersAsync(CancellationToken cancellationToken)

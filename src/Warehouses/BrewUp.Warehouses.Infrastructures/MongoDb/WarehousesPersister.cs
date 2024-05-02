@@ -12,7 +12,7 @@ public class WarehousesPersister : IPersister
 
 	public WarehousesPersister(IMongoClient mongoClient, ILoggerFactory loggerFactory)
 	{
-		_database = mongoClient.GetDatabase("Warehouses");
+		_database = mongoClient.GetDatabase("BrewUp-Warehouses");
 		_logger = loggerFactory.CreateLogger(GetType());
 	}
 

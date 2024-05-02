@@ -10,7 +10,7 @@ using Muflone.SpecificationTests;
 
 namespace BrewUp.Warehouses.Domain.Tests.Entities;
 
-public class UpdateAvailabilityDueToProductionOrderSuccessfully : CommandSpecification<UpdateAvailabilityDueToProductionOrder>
+public class DepositBeerIntoWarehouseSuccessfully : CommandSpecification<DepositBeerIntoWarehouse>
 {
 	private readonly BeerId _beerId = new(Guid.NewGuid());
 	private readonly BeerName _beerName = new("Muflone IPA");
@@ -23,18 +23,18 @@ public class UpdateAvailabilityDueToProductionOrderSuccessfully : CommandSpecifi
 		yield break;
 	}
 
-	protected override UpdateAvailabilityDueToProductionOrder When()
+	protected override DepositBeerIntoWarehouse When()
 	{
-		return new UpdateAvailabilityDueToProductionOrder(_beerId, _correlationId, _beerName, _quantity);
+		return new DepositBeerIntoWarehouse(_beerId, _correlationId, _beerName, _quantity);
 	}
 
-	protected override ICommandHandlerAsync<UpdateAvailabilityDueToProductionOrder> OnHandler()
+	protected override ICommandHandlerAsync<DepositBeerIntoWarehouse> OnHandler()
 	{
-		return new UpdateAvailabilityDueToProductionOrderCommandHandler(Repository, new NullLoggerFactory());
+		return new DepositBeerIntoWarehouseCommandHandler(Repository, new NullLoggerFactory());
 	}
 
 	protected override IEnumerable<DomainEvent> Expect()
 	{
-		yield return new AvailabilityUpdatedDueToProductionOrder(_beerId, _correlationId, _beerName, _quantity);
+		yield return new BeerDepositedIntoWarehouse(_beerId, _correlationId, _beerName, _quantity);
 	}
 }

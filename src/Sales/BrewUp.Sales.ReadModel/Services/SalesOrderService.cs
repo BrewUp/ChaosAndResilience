@@ -19,9 +19,13 @@ public sealed class SalesOrderService(ILoggerFactory loggerFactory, [FromKeyedSe
 	{
 		try
 		{
-			var salesOrder = SalesOrder.CreateSalesOrder(salesOrderId, salesOrderNumber, customerId, customerName,
-				orderDate, paymentDetails, deliveryAddress, rows);
-			await Persister.InsertAsync(salesOrder, cancellationToken);
+			var salesOrder = await Persister.GetByIdAsync<SalesOrder>(salesOrderId.Value.ToString(), cancellationToken);
+			if (salesOrder == null || string.IsNullOrEmpty(salesOrder.CustomerName))
+			{
+				salesOrder = SalesOrder.CreateSalesOrder(salesOrderId, salesOrderNumber, customerId, customerName,
+					orderDate, paymentDetails, deliveryAddress, rows);
+				await Persister.InsertAsync(salesOrder, cancellationToken);
+			}
 		}
 		catch (Exception ex)
 		{

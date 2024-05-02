@@ -1,5 +1,5 @@
-﻿using BrewUp.Sales.Infrastructures.Azure.Commands;
-using BrewUp.Sales.Infrastructures.Azure.Events;
+﻿using BrewUp.Sales.Infrastructures.RabbitMQ.Commands;
+using BrewUp.Sales.Infrastructures.RabbitMQ.Events;
 using BrewUp.Sales.ReadModel.Dtos;
 using BrewUp.Sales.ReadModel.Services;
 using BrewUp.Shared.ReadModel;
@@ -7,55 +7,57 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Muflone;
 using Muflone.Persistence;
-using Muflone.Transport.Azure;
-using Muflone.Transport.Azure.Abstracts;
-using Muflone.Transport.Azure.Models;
+using Muflone.Transport.RabbitMQ;
+using Muflone.Transport.RabbitMQ.Abstracts;
+using Muflone.Transport.RabbitMQ.Factories;
+using Muflone.Transport.RabbitMQ.Models;
 
-namespace BrewUp.Sales.Infrastructures.Azure;
+namespace BrewUp.Sales.Infrastructures.RabbitMQ;
 
-public static class AzureServiceBusHelper
+public static class RabbitMqHelper
 {
 	public static IServiceCollection AddAzureForSalesModule(this IServiceCollection services,
-		AzureServiceBusSettings azureServiceBusSettings)
+		RabbitMqSettings rabbitMqSettings)
 	{
 		var serviceProvider = services.BuildServiceProvider();
 		var repository = serviceProvider.GetRequiredService<IRepository>();
 		var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
 
-		AzureServiceBusConfiguration azureServiceBusConfiguration = new(azureServiceBusSettings.ConnectionString,
-			string.Empty, azureServiceBusSettings.ClientId, 1);
-		services.AddMufloneTransportAzure(azureServiceBusConfiguration);
+		var rabbitMqConfiguration = new RabbitMQConfiguration(rabbitMqSettings.Host, rabbitMqSettings.Username,
+			rabbitMqSettings.Password, rabbitMqSettings.ExchangeCommandName, rabbitMqSettings.ExchangeEventName);
+		var mufloneConnectionFactory = new MufloneConnectionFactory(rabbitMqConfiguration, loggerFactory);
+		services.AddMufloneTransportRabbitMQ(loggerFactory, rabbitMqConfiguration);
 
 		serviceProvider = services.BuildServiceProvider();
 		var consumers = serviceProvider.GetRequiredService<IEnumerable<IConsumer>>();
 		consumers = consumers.Concat(new List<IConsumer>
 		{
 			new CreateSalesOrderConsumer(repository,
-				azureServiceBusConfiguration,
+				mufloneConnectionFactory,
 				loggerFactory),
 			new SalesOrderCreatedConsumer(serviceProvider.GetRequiredService<ISalesOrderService>(),
 				serviceProvider.GetRequiredService<IEventBus>(),
-				azureServiceBusConfiguration, loggerFactory),
+				mufloneConnectionFactory, loggerFactory),
 
 			new AvailabilityUpdatedForNotificationConsumer(serviceProvider.GetRequiredService<IQueries<Beers>>(),
 				serviceProvider.GetRequiredService<IQueries<Availability>>(),
 				serviceProvider.GetRequiredService<IServiceBus>(),
-				azureServiceBusConfiguration,
+				mufloneConnectionFactory,
 				loggerFactory),
-
-			new CreateAvailabilityDueToWarehousesNotificationConsumer(repository, azureServiceBusConfiguration,
+			
+			new CreateAvailabilityDueToWarehousesNotificationConsumer(repository, mufloneConnectionFactory,
 				loggerFactory),
-			new UpdateAvailabilityDueToWarehousesNotificationConsumer(repository, azureServiceBusConfiguration,
+			new UpdateAvailabilityDueToWarehousesNotificationConsumer(repository, mufloneConnectionFactory,
 				loggerFactory),
 			new AvailabilityUpdatedDueToWarehousesNotificationConsumer(serviceProvider.GetRequiredService<IAvailabilityService>(),
-				azureServiceBusConfiguration, loggerFactory),
+				mufloneConnectionFactory, loggerFactory),
 			
-			new CreateBeerDueToAvailabilityLoadedConsumer(repository, azureServiceBusConfiguration, loggerFactory),
+			new CreateBeerDueToAvailabilityLoadedConsumer(repository, mufloneConnectionFactory, loggerFactory),
 			new BeerDueToAvailabilityLoadedCreatedConsumer(serviceProvider.GetRequiredService<IBeersService>(), 
-				azureServiceBusConfiguration, loggerFactory)
+				mufloneConnectionFactory, loggerFactory)
 		});
 
-		services.AddMufloneAzureConsumers(consumers);
+		services.AddMufloneRabbitMQConsumers(consumers);
 
 		return services;
 	}

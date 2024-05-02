@@ -22,10 +22,10 @@ public class Availability : AggregateRoot
 
 	private Availability(BeerId beerId, BeerName beerName, Quantity quantity, Guid correlationId)
 	{
-		RaiseEvent(new AvailabilityUpdatedDueToProductionOrder(beerId, correlationId, beerName, quantity));
+		RaiseEvent(new BeerDepositedIntoWarehouse(beerId, correlationId, beerName, quantity));
 	}
 
-	private void Apply(AvailabilityUpdatedDueToProductionOrder @event)
+	private void Apply(BeerDepositedIntoWarehouse @event)
 	{
 		Id = @event.BeerId;
 
@@ -34,9 +34,14 @@ public class Availability : AggregateRoot
 		_quantity = @event.Quantity;
 	}
 
-	internal void UpdateAvailability(Quantity quantity, Guid correlationId)
+	internal void UpdateAvailabilityDueToSalesOrder(Quantity quantity, Guid correlationId)
 	{
-		quantity = _quantity with { Value = _quantity.Value + quantity.Value };
-		RaiseEvent(new AvailabilityUpdatedDueToProductionOrder(_beerId, correlationId, _beerName, quantity));
+		quantity = _quantity with { Value = _quantity.Value - quantity.Value };
+		RaiseEvent(new AvailabilityUpdatedDueToSalesOrder(_beerId, correlationId, quantity, _beerName));
+	}
+
+	private void Apply(AvailabilityUpdatedDueToSalesOrder @event)
+	{
+		_quantity = @event.Quantity;
 	}
 }

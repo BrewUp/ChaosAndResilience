@@ -3,7 +3,7 @@ using BrewUp.Shared.ReadModel;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 
-namespace BrewUp.Sales.Infrastructures;
+namespace BrewUp.Sales.Infrastructures.MongoDb;
 
 public class SalesPersister : IPersister
 {

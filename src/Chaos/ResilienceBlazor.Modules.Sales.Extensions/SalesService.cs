@@ -17,8 +17,8 @@ public sealed class SalesService(SalesClient salesClient, ResilienceSalesClient 
 		var customers = new List<CustomerJson>
 		{
 			new (Guid.NewGuid(), "Il Grottino del Muflone"),
-			new(Guid.NewGuid(), "Il Muflone Assetato"),
-			new(Guid.NewGuid(), "La Birra del Muflone ")
+			//new(Guid.NewGuid(), "Il Muflone Assetato"),
+			//new(Guid.NewGuid(), "La Birra del Muflone ")
 		};
 
 		return Task.FromResult(new PagedResult<CustomerJson>(customers, 1, 10, 3));

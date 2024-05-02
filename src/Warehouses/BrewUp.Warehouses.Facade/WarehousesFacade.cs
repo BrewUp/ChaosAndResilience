@@ -13,10 +13,10 @@ public sealed class WarehousesFacade(IServiceBus serviceBus) : IWarehousesFacade
 	{
 		cancellationToken.ThrowIfCancellationRequested();
 
-		UpdateAvailabilityDueToProductionOrder updateAvailabilityDueToProductionOrder =
+		DepositBeerIntoWarehouse command =
 			new(new BeerId(new Guid(availability.BeerId)), Guid.NewGuid(), new BeerName(availability.BeerName),
 				availability.Quantity);
 
-		await serviceBus.SendAsync(updateAvailabilityDueToProductionOrder, cancellationToken);
+		await serviceBus.SendAsync(command, cancellationToken);
 	}
 }

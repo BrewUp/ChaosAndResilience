@@ -19,7 +19,7 @@ public sealed class SalesOrderCreatedForWarehousesEventHandlerAsync(ILoggerFacto
 				new Guid(@event.UserProperties.FirstOrDefault(u => u.Key.Equals("CorrelationId")).Value.ToString()!);
 			
 			SalesOrderConfirmed integrationEvent =
-				new(@event.SalesOrderId, correlationId, @event.SalesOrderNumber, @event.Rows);
+				new(@event.SalesOrderId, correlationId, @event.Rows);
 			await eventBus.PublishAsync(integrationEvent, cancellationToken);
 		}
 		catch (Exception ex)

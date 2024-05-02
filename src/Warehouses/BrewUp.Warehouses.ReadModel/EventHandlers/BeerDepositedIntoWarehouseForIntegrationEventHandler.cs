@@ -4,10 +4,10 @@ using Muflone;
 
 namespace BrewUp.Warehouses.ReadModel.EventHandlers;
 
-public class AvailabilityUpdatedDueToProductionOrderForIntegrationEventHandler(ILoggerFactory loggerFactory,
-	IEventBus eventBus) : DomainEventHandlerBase<AvailabilityUpdatedDueToProductionOrder>(loggerFactory)
+public class BeerDepositedIntoWarehouseForIntegrationEventHandler(ILoggerFactory loggerFactory,
+	IEventBus eventBus) : DomainEventHandlerBase<BeerDepositedIntoWarehouse>(loggerFactory)
 {
-	public override async Task HandleAsync(AvailabilityUpdatedDueToProductionOrder @event,
+	public override async Task HandleAsync(BeerDepositedIntoWarehouse @event,
 		CancellationToken cancellationToken = new())
 	{
 		cancellationToken.ThrowIfCancellationRequested();

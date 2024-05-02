@@ -3,14 +3,14 @@ using BrewUp.Sales.ReadModel.Services;
 using BrewUp.Sales.SharedKernel.Events;
 using Microsoft.Extensions.Logging;
 using Muflone.Messages.Events;
-using Muflone.Transport.Azure.Consumers;
-using Muflone.Transport.Azure.Models;
+using Muflone.Transport.RabbitMQ.Abstracts;
+using Muflone.Transport.RabbitMQ.Consumers;
 
-namespace BrewUp.Sales.Infrastructures.Azure.Events;
+namespace BrewUp.Sales.Infrastructures.RabbitMQ.Events;
 
 public sealed class AvailabilityUpdatedDueToWarehousesNotificationConsumer(IAvailabilityService availabilityService,
-		AzureServiceBusConfiguration azureServiceBusConfiguration, ILoggerFactory loggerFactory)
-	: DomainEventConsumerBase<AvailabilityUpdatedDueToWarehousesNotification>(azureServiceBusConfiguration, loggerFactory)
+		IMufloneConnectionFactory connectionFactory, ILoggerFactory loggerFactory)
+	: DomainEventsConsumerBase<AvailabilityUpdatedDueToWarehousesNotification>(connectionFactory, loggerFactory)
 {
 	protected override IEnumerable<IDomainEventHandlerAsync<AvailabilityUpdatedDueToWarehousesNotification>> HandlersAsync { get; } = new List<IDomainEventHandlerAsync<AvailabilityUpdatedDueToWarehousesNotification>>
 	{

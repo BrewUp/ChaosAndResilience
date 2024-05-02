@@ -19,6 +19,11 @@ public sealed class AvailabilityService : ServiceBase, IAvailabilityService
 		try
 		{
 			var beerAvailability = await Persister.GetByIdAsync<Dtos.Availability>(beerId.Value.ToString(), cancellationToken);
+			if (beerAvailability == null)
+			{
+				beerAvailability = Dtos.Availability.Create(beerId, beerName, quantity, 1);
+				await Persister.InsertAsync(beerAvailability, cancellationToken);
+			}
 			beerAvailability.UpdateQuantity(quantity);
 			await Persister.UpdateAsync(beerAvailability, cancellationToken);
 		}
@@ -27,5 +32,14 @@ public sealed class AvailabilityService : ServiceBase, IAvailabilityService
 			Logger.LogError(ex, "Error updating availability");
 			throw;
 		}
+	}
+
+	public async Task UpdateAvailabilityAsync(BeerId beerId, Quantity quantity, CancellationToken cancellationToken = default)
+	{
+		cancellationToken.ThrowIfCancellationRequested();
+		
+		var beerAvailability = await Persister.GetByIdAsync<Dtos.Availability>(beerId.Value.ToString(), cancellationToken);
+		beerAvailability.UpdateQuantity(quantity);
+		await Persister.UpdateAsync(beerAvailability, cancellationToken);
 	}
 }

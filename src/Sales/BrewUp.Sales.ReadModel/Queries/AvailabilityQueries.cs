@@ -13,11 +13,19 @@ public sealed class AvailabilityQueries(IMongoClient mongoClient) : IQueries<Ava
 
 	public async Task<Availability> GetByIdAsync(string id, CancellationToken cancellationToken)
 	{
-		var collection = _database.GetCollection<Availability>(nameof(Availability));
-		var filter = Builders<Availability>.Filter.Eq("_id", id);
-		return (await collection.CountDocumentsAsync(filter, cancellationToken: cancellationToken) > 0
-			? (await collection.FindAsync(filter, cancellationToken: cancellationToken)).First()
-			: null)!;
+		try
+		{
+			var collection = _database.GetCollection<Availability>(nameof(Availability));
+			var filter = Builders<Availability>.Filter.Eq("_id", id);
+			return (await collection.CountDocumentsAsync(filter, cancellationToken: cancellationToken) > 0
+				? (await collection.FindAsync(filter, cancellationToken: cancellationToken)).First()
+				: null)!;
+		}
+		catch (Exception e)
+		{
+			Console.WriteLine(e);
+			throw;
+		}
 	}
 
 	public async Task<PagedResult<Availability>> GetByFilterAsync(Expression<Func<Availability, bool>>? query, int page, int pageSize, CancellationToken cancellationToken)
@@ -25,14 +33,23 @@ public sealed class AvailabilityQueries(IMongoClient mongoClient) : IQueries<Ava
 		if (--page < 0)
 			page = 0;
 
-		var collection = _database.GetCollection<Availability>(nameof(Availability));
-		var queryable = query != null
-			? collection.AsQueryable().Where(query)
-			: collection.AsQueryable();
+		try
+		{
+			var collection = _database.GetCollection<Availability>(nameof(Availability));
+			var queryable = query != null
+				? collection.AsQueryable().Where(query)
+				: collection.AsQueryable();
 
-		var count = await queryable.CountAsync(cancellationToken: cancellationToken);
-		var results = await queryable.Skip(page * pageSize).Take(pageSize).ToListAsync(cancellationToken: cancellationToken);
+			var count = await queryable.CountAsync(cancellationToken: cancellationToken);
+			var results = await queryable.Skip(page * pageSize).Take(pageSize)
+				.ToListAsync(cancellationToken: cancellationToken);
 
-		return new PagedResult<Availability>(results, page, pageSize, count);
+			return new PagedResult<Availability>(results, page, pageSize, count);
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine(ex);
+			throw;
+		}
 	}
 }

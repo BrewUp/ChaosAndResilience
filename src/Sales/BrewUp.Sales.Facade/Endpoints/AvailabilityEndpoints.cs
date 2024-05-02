@@ -1,13 +1,9 @@
-﻿using BrewUp.Sales.Facade.Validators;
-using BrewUp.Sales.ReadModel.Dtos;
-using BrewUp.Sales.ReadModel.Services;
+﻿using BrewUp.Sales.ReadModel.Dtos;
 using BrewUp.Shared.Contracts;
 using BrewUp.Shared.Entities;
 using BrewUp.Shared.ReadModel;
-using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Routing;
 
 namespace BrewUp.Sales.Facade.Endpoints;

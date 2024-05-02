@@ -4,11 +4,11 @@ using Microsoft.Extensions.Logging;
 
 namespace BrewUp.Warehouses.ReadModel.EventHandlers;
 
-public sealed class AvailabilityUpdatedDueToProductionOrderEventHandler(ILoggerFactory loggerFactory,
+public sealed class BeerDepositedIntoWarehouseEventHandler(ILoggerFactory loggerFactory,
 		IAvailabilityService availabilityService)
-	: DomainEventHandlerBase<AvailabilityUpdatedDueToProductionOrder>(loggerFactory)
+	: DomainEventHandlerBase<BeerDepositedIntoWarehouse>(loggerFactory)
 {
-	public override async Task HandleAsync(AvailabilityUpdatedDueToProductionOrder @event,
+	public override async Task HandleAsync(BeerDepositedIntoWarehouse @event,
 		CancellationToken cancellationToken = new())
 	{
 		cancellationToken.ThrowIfCancellationRequested();

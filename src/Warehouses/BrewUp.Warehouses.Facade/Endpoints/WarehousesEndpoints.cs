@@ -22,13 +22,17 @@ public static class WarehousesEndpoints
 		return endpoints;
 	}
 
-	public static async Task<IResult> HandleSetAvailabilities(
+	private static async Task<IResult> HandleSetAvailabilities(
 		IWarehousesFacade warehousesFacade,
 		IValidator<SetAvailabilityJson> validator,
 		ValidationHandler validationHandler,
 		SetAvailabilityJson body,
 		CancellationToken cancellationToken)
 	{
+		await validationHandler.ValidateAsync(validator, body);
+		if (!validationHandler.IsValid)
+			return Results.BadRequest(validationHandler.Errors);
+		
 		await warehousesFacade.SetAvailabilityAsync(body, cancellationToken);
 
 		return Results.Ok();

@@ -3,15 +3,15 @@ using BrewUp.Sales.ReadModel.Services;
 using BrewUp.Sales.SharedKernel.Events;
 using Microsoft.Extensions.Logging;
 using Muflone.Messages.Events;
-using Muflone.Transport.Azure.Consumers;
-using Muflone.Transport.Azure.Models;
+using Muflone.Transport.RabbitMQ.Abstracts;
+using Muflone.Transport.RabbitMQ.Consumers;
 
-namespace BrewUp.Sales.Infrastructures.Azure.Events;
+namespace BrewUp.Sales.Infrastructures.RabbitMQ.Events;
 
 public sealed class BeerDueToAvailabilityLoadedCreatedConsumer(IBeersService beersService,
-    AzureServiceBusConfiguration azureServiceBusConfiguration,
-    ILoggerFactory loggerFactory) : DomainEventConsumerBase<BeerDueToAvailabilityLoadedCreated>(
-    azureServiceBusConfiguration, loggerFactory)
+    IMufloneConnectionFactory connectionFactory,
+    ILoggerFactory loggerFactory) : DomainEventsConsumerBase<BeerDueToAvailabilityLoadedCreated>(
+    connectionFactory, loggerFactory)
 {
     protected override IEnumerable<IDomainEventHandlerAsync<BeerDueToAvailabilityLoadedCreated>> HandlersAsync { get; } = new List<IDomainEventHandlerAsync<BeerDueToAvailabilityLoadedCreated>>
     {
