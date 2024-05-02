@@ -1,6 +1,0 @@
-@BrewUp.Chaos_HostAddress = http://localhost:5048
-
-GET {{BrewUp.Chaos_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

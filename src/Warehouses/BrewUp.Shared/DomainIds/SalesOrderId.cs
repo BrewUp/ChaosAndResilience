@@ -1,6 +1,10 @@
-﻿namespace BrewUp.Shared.DomainIds;
+﻿using Muflone.Core;
 
-public class SalesOrderId
+namespace BrewUp.Shared.DomainIds;
+
+public sealed class SalesOrderId : DomainId
 {
-    
+    public SalesOrderId(Guid value) : base(value)
+    {
+    }
 }

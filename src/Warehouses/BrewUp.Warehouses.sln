@@ -33,6 +33,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BrewUp.Warehouses.Facade", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BrewUp.Warehouses.Infrastructures", "BrewUp.Warehouses.Infrastructures\BrewUp.Warehouses.Infrastructures.csproj", "{3DF76A57-DDEB-485C-A45F-9408728607C6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrewUp.Warehouses.Acl", "BrewUp.Warehouses.Acl\BrewUp.Warehouses.Acl.csproj", "{6F831251-0271-4925-AF42-1FDAD81059D0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +73,10 @@ Global
 		{3DF76A57-DDEB-485C-A45F-9408728607C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3DF76A57-DDEB-485C-A45F-9408728607C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3DF76A57-DDEB-485C-A45F-9408728607C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F831251-0271-4925-AF42-1FDAD81059D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F831251-0271-4925-AF42-1FDAD81059D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F831251-0271-4925-AF42-1FDAD81059D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F831251-0271-4925-AF42-1FDAD81059D0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -85,6 +91,7 @@ Global
 		{04C0442A-260E-4B9A-B294-888DB4D2FE20} = {B0D42D6A-A1BA-46DC-A7FE-4C73554E63E8}
 		{51312F8D-569D-42AB-86C7-B8766ED35664} = {B9747804-30A1-4DFA-880C-D5D726024B76}
 		{3DF76A57-DDEB-485C-A45F-9408728607C6} = {EB03D86C-C5B9-4E24-B8B5-76E7F442AAA1}
+		{6F831251-0271-4925-AF42-1FDAD81059D0} = {B9747804-30A1-4DFA-880C-D5D726024B76}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B7B50C20-8C4B-4C26-BC28-8542815606DB}

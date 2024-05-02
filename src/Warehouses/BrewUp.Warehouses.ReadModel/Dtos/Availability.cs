@@ -16,14 +16,15 @@ public class Availability : EntityBase
 	{
 	}
 
-	public static Availability Create(BeerId beerId, BeerName beerName, Quantity quantity)
+	public static Availability Create(BeerId beerId, BeerName beerName, Quantity quantity, int version)
 	{
-		return new Availability(beerId.Value.ToString(), beerName.Value, quantity);
+		return new Availability(beerId.Value.ToString(), beerName.Value, quantity, version);
 	}
 
-	private Availability(string beerId, string beerName, Quantity quantity)
+	private Availability(string beerId, string beerName, Quantity quantity, int version)
 	{
 		Id = beerId;
+		Version = version;
 
 		BeerId = beerId;
 		BeerName = beerName;

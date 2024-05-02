@@ -9,30 +9,30 @@
 *.user
 *.userosscache
 *.sln.docstates
-**/.idea/**/workspace.xml
-**/.idea/**/tasks.xml
-**/.idea/shelf/*
-**/.idea/dictionaries
-**/.idea/httpRequests/
+**/src/Sales/.idea/**/workspace.xml
+**/src/Sales/.idea/**/tasks.xml
+**/src/Sales/.idea/shelf/*
+**/src/Sales/.idea/dictionaries
+**/src/Sales/.idea/httpRequests/
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
 # Sensitive or high-churn files
-**/.idea/**/dataSources/
-**/.idea/**/dataSources.ids
-**/.idea/**/dataSources.xml
-**/.idea/**/dataSources.local.xml
-**/.idea/**/sqlDataSources.xml
-**/.idea/**/dynamic.xml
+**/src/Sales/.idea/**/dataSources/
+**/src/Sales/.idea/**/dataSources.ids
+**/src/Sales/.idea/**/dataSources.xml
+**/src/Sales/.idea/**/dataSources.local.xml
+**/src/Sales/.idea/**/sqlDataSources.xml
+**/src/Sales/.idea/**/dynamic.xml
 **/src/Warehouses/.idea/**
 /src/Warehouses/.idea/**/
 
 # Rider
 # Rider auto-generates .iml files, and contentModel.xml
-**/.idea/**/*.iml
-**/.idea/**/contentModel.xml
-**/.idea/**/modules.xml
+**/src/Sales/.idea/**/*.iml
+**/src/Sales/.idea/**/contentModel.xml
+**/src/Sales/.idea/**/modules.xml
 
 # Mono auto generated files
 mono_crash.*

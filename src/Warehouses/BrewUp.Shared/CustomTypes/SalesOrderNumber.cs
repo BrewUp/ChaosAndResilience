@@ -1,3 +1,3 @@
 ﻿namespace BrewUp.Shared.CustomTypes;
 
-public record SalesOrderNumber();
+public record SalesOrderNumber(string Value);

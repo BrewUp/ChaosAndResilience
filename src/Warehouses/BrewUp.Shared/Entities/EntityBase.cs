@@ -3,6 +3,7 @@
 public abstract class EntityBase : IEquatable<EntityBase>
 {
     public string Id { get; set; } = string.Empty;
+    public int Version { get; set; } = 0;
 
     public override int GetHashCode()
     {
