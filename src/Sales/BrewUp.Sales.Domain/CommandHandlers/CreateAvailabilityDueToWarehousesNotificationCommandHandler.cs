@@ -5,12 +5,11 @@ using Muflone.Persistence;
 
 namespace BrewUp.Sales.Domain.CommandHandlers;
 
-public sealed class CreateAvailabilityDueToWarehousesNotificationCommandHandler : CommandHandlerBaseAsync<CreateAvailabilityDueToWarehousesNotification>
+public sealed class CreateAvailabilityDueToWarehousesNotificationCommandHandler(
+	IRepository repository,
+	ILoggerFactory loggerFactory)
+	: CommandHandlerBaseAsync<CreateAvailabilityDueToWarehousesNotification>(repository, loggerFactory)
 {
-	public CreateAvailabilityDueToWarehousesNotificationCommandHandler(IRepository repository, ILoggerFactory loggerFactory) : base(repository, loggerFactory)
-	{
-	}
-
 	public override async Task ProcessCommand(CreateAvailabilityDueToWarehousesNotification command,
 		CancellationToken cancellationToken = default)
 	{

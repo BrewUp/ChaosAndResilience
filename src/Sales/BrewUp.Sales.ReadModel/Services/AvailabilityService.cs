@@ -18,8 +18,17 @@ public sealed class AvailabilityService : ServiceBase, IAvailabilityService
 		cancellationToken.ThrowIfCancellationRequested();
 		try
 		{
-			var availability = Dtos.Availability.Create(beerId, beerName, quantity);
-			await Persister.InsertAsync(availability, cancellationToken);
+			var availability = await Persister.GetByIdAsync<Dtos.Availability>(beerId.Value.ToString(), cancellationToken);
+			if (availability == null || string.IsNullOrWhiteSpace(availability.BeerName))
+			{
+				availability = Dtos.Availability.Create(beerId, beerName, quantity);
+				await Persister.InsertAsync(availability, cancellationToken);
+			}
+			else
+			{
+				availability.UpdateAvailability(quantity);
+				await Persister.UpdateAsync(availability, cancellationToken);
+			}
 		}
 		catch (Exception ex)
 		{

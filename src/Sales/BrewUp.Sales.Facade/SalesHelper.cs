@@ -17,6 +17,8 @@ public static class SalesHelper
 		services.AddValidatorsFromAssemblyContaining<SalesOrderContractValidator>();
 		services.AddSingleton<ValidationHandler>();
 
+		services.AddScoped<IMessagesService, MessagesService>();
+		
 		services.AddScoped<ISalesFacade, SalesFacade>();
 		services.AddScoped<ISalesOrderService, SalesOrderService>();
 		services.AddScoped<IQueries<SalesOrder>, SalesOrderQueries>();

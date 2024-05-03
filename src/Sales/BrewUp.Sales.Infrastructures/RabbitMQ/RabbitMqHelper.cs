@@ -42,6 +42,7 @@ public static class RabbitMqHelper
 			new AvailabilityUpdatedForNotificationConsumer(serviceProvider.GetRequiredService<IQueries<Beers>>(),
 				serviceProvider.GetRequiredService<IQueries<Availability>>(),
 				serviceProvider.GetRequiredService<IServiceBus>(),
+				serviceProvider.GetRequiredService<IMessagesService>(),
 				mufloneConnectionFactory,
 				loggerFactory),
 			

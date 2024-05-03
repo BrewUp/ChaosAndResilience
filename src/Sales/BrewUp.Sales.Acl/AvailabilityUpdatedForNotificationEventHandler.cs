@@ -1,4 +1,5 @@
 ﻿using BrewUp.Sales.ReadModel.Dtos;
+using BrewUp.Sales.ReadModel.Services;
 using BrewUp.Sales.SharedKernel.Commands;
 using BrewUp.Sales.SharedKernel.Events;
 using BrewUp.Shared.ReadModel;
@@ -10,12 +11,20 @@ namespace BrewUp.Sales.Acl;
 
 public sealed class AvailabilityUpdatedForNotificationEventHandler(IQueries<Availability> queries,
 	ILoggerFactory loggerFactory,
-	IServiceBus serviceBus) : IntegrationEventHandlerAsync<AvailabilityUpdatedForNotification>(loggerFactory)
+	IServiceBus serviceBus,
+	IMessagesService messagesService) : IntegrationEventHandlerAsync<AvailabilityUpdatedForNotification>(loggerFactory)
 {
 	public override async Task HandleAsync(AvailabilityUpdatedForNotification @event,
 		CancellationToken cancellationToken = new())
 	{
 		cancellationToken.ThrowIfCancellationRequested();
+		
+		var isMessageProcessed =
+			await messagesService.IsMessageProcessedAsync(@event.MessageId, @event.GetType().FullName!, @event.Version,
+				DateTime.UtcNow);
+		
+		if (isMessageProcessed)
+			return;
 
 		var correlationId =
 			new Guid(@event.UserProperties.FirstOrDefault(u => u.Key.Equals("CorrelationId")).Value.ToString()!);

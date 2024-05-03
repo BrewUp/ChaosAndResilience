@@ -1,5 +1,4 @@
-﻿using BrewUp.Sales.ReadModel.Services;
-using BrewUp.Sales.SharedKernel.Events;
+﻿using BrewUp.Sales.SharedKernel.Events;
 using Microsoft.Extensions.Logging;
 using Muflone;
 

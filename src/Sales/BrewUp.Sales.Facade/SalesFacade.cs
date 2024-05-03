@@ -20,10 +20,10 @@ public sealed class SalesFacade(IServiceBus serviceBus,
 		if (body.SalesOrderId.Equals(string.Empty))
 			body = body with { SalesOrderId = Guid.NewGuid().ToString() };
 
-		// var beersAvailable = await GetSalesOrderRows(body, cancellationToken);
-		//
-		// if (!beersAvailable.Any())
-		// 	return string.Empty;
+		var beersAvailable = await GetSalesOrderRows(body, cancellationToken);
+		
+		if (!beersAvailable.Any())
+			return string.Empty;
 
 		CreateSalesOrderFromPortal command = new(new SalesOrderId(new Guid(body.SalesOrderId)), Guid.NewGuid(),
 			new SalesOrderNumber(body.SalesOrderNumber), new OrderDate(body.OrderDate), new CustomerId(body.CustomerId),
