@@ -74,9 +74,9 @@ public static class SalesHelper
 		return services;
 	}
 
-	public static IServiceCollection AddSalesModule(this IServiceCollection services, AppConfiguration configuration)
+	public static IServiceCollection AddChaosSalesModule(this IServiceCollection services, AppConfiguration configuration)
 	{
-		var httpClientBuilder = services.AddHttpClient<SalesClient>(client =>
+		var httpClientBuilder = services.AddHttpClient<ChaosSalesClient>(client =>
 		{
 			client.BaseAddress = new Uri(configuration.BrewUpSalesUri);
 			client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -109,4 +109,14 @@ public static class SalesHelper
 		return services;
 	}
 
+	public static IServiceCollection AddSalesModule(this IServiceCollection services, AppConfiguration configuration)
+	{
+		var httpClientBuilder = services.AddHttpClient<SalesClient>(client =>
+		{
+			client.BaseAddress = new Uri(configuration.BrewUpSalesUri);
+			client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+		});
+
+		return services;
+	}
 }

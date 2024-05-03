@@ -11,6 +11,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\BrewUp.Warehouses.ReadModel\BrewUp.Warehouses.ReadModel.csproj" />
       <ProjectReference Include="..\BrewUp.Warehouses.SharedKernel\BrewUp.Warehouses.SharedKernel.csproj" />
     </ItemGroup>
 

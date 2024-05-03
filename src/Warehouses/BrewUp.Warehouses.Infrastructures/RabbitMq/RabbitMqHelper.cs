@@ -32,15 +32,22 @@ public static class RabbitMqHelper
 		consumers = consumers.Concat(new List<IConsumer>
 		{
 			new DepositBeerIntoWarehouseConsumer(repository, mufloneConnectionFactory, loggerFactory),
-			
 			new BeerDepositedIntoWarehouseConsumer(serviceProvider.GetRequiredService<IAvailabilityService>(),
 				serviceProvider.GetRequiredService<IEventBus>(),
 				mufloneConnectionFactory, loggerFactory),
 			
-			new UpdateAvailabilityDueToSalesOrderConsumer(repository, mufloneConnectionFactory, loggerFactory),
-			new AvailabilityUpdatedDueToSalesOrderConsumer(loggerFactory, mufloneConnectionFactory, serviceProvider.GetRequiredService<IAvailabilityService>()),
+			new RefillBeerIntoWarehouseConsumer(repository, mufloneConnectionFactory, loggerFactory),
+			new BeerRefilledIntoWarehouseConsumer(loggerFactory, serviceProvider.GetRequiredService<IEventBus>(), 
+				mufloneConnectionFactory, serviceProvider.GetRequiredService<IAvailabilityService>()),
 			
-			new SalesOrderConfirmedConsumer(serviceProvider.GetRequiredService<IServiceBus>(), mufloneConnectionFactory, loggerFactory)
+			new UpdateAvailabilityDueToSalesOrderConsumer(repository, mufloneConnectionFactory, loggerFactory),
+			new AvailabilityUpdatedDueToSalesOrderConsumer(serviceProvider.GetRequiredService<IEventBus>(),
+				loggerFactory, mufloneConnectionFactory, 
+				serviceProvider.GetRequiredService<IAvailabilityService>()),
+			
+			new SalesOrderConfirmedConsumer(serviceProvider.GetRequiredService<IServiceBus>(),
+				serviceProvider.GetRequiredService<IMessagesService>(),
+				mufloneConnectionFactory, loggerFactory)
 		});
 		services.AddMufloneRabbitMQConsumers(consumers);
 

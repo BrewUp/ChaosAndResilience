@@ -1,6 +1,13 @@
-﻿namespace BrewUp.Warehouses.SharedKernel.Events;
+﻿using BrewUp.Shared.CustomTypes;
+using BrewUp.Shared.DomainIds;
+using Muflone.Messages.Events;
 
-public class BeerRefilledIntoWarehouse
+namespace BrewUp.Warehouses.SharedKernel.Events;
+
+public sealed class BeerRefilledIntoWarehouse(BeerId aggregateId, Guid commitId, BeerName beerName, Quantity quantity)
+    : DomainEvent(aggregateId, commitId)
 {
-    
+    public readonly BeerId BeerId = aggregateId;
+    public readonly BeerName BeerName = beerName;
+    public readonly Quantity Quantity = quantity;
 }

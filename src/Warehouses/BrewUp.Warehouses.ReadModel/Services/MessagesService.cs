@@ -1,10 +1,11 @@
 ﻿using BrewUp.Shared.ReadModel;
 using BrewUp.Warehouses.ReadModel.Dtos;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace BrewUp.Warehouses.ReadModel.Services;
 
-public sealed class MessagesService(ILoggerFactory loggerFactory, IPersister persister)
+public sealed class MessagesService(ILoggerFactory loggerFactory, [FromKeyedServices("warehouses")] IPersister persister)
     : ServiceBase(loggerFactory, persister), IMessagesService
 {
     public async Task<bool> IsMessageProcessedAsync(Guid messageId, string eventType, int version, DateTime receivedOn,
@@ -21,8 +22,9 @@ public sealed class MessagesService(ILoggerFactory loggerFactory, IPersister per
 
             return false;
         }
-        catch
+        catch (Exception ex)
         {
+            Console.WriteLine(ex.Message);
             return true;
         }
     }

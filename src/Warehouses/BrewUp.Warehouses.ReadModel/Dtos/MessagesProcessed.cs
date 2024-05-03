@@ -5,7 +5,7 @@ namespace BrewUp.Warehouses.ReadModel.Dtos;
 public class MessagesProcessed : EntityBase
 {
     public string EventType { get; private set; }
-    public int Version{ get; private set; }
+    public int AggregateVersion { get; private set; }
     public DateTime ReceivedOn{ get; private set; }
     
     protected MessagesProcessed()
@@ -18,7 +18,7 @@ public class MessagesProcessed : EntityBase
     {
         Id = messageId.ToString();
         EventType = eventType;
-        Version = version;
+        AggregateVersion = version;
         ReceivedOn = receivedOn;
     }
 }

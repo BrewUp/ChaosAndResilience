@@ -3,14 +3,14 @@ using ResilienceBlazor.Shared.Configuration;
 
 namespace ResilienceBlazor.Modules.Sales.Extensions;
 
-public sealed class SalesService(SalesClient salesClient, ResilienceSalesClient resilienceSalesClient) : ISalesService
+public sealed class SalesService(ChaosSalesClient chaosSalesClient, ResilienceSalesClient resilienceSalesClient, SalesClient salesClient) : ISalesService
 {
 	public async Task<PagedResult<SalesOrderJson>>
 		GetSalesOrdersWithResilienceAsync(CancellationToken cancellationToken) =>
 		await resilienceSalesClient.GetSalesOrdersAsync(cancellationToken);
 
 	public async Task<PagedResult<SalesOrderJson>> GetSalesOrdersWithoutResilienceAsync(CancellationToken cancellationToken) =>
-		await salesClient.GetSalesOrdersAsync(cancellationToken);
+		await chaosSalesClient.GetSalesOrdersAsync(cancellationToken);
 
 	public Task<PagedResult<CustomerJson>> GetCustomersAsync(CancellationToken cancellationToken)
 	{
@@ -25,8 +25,8 @@ public sealed class SalesService(SalesClient salesClient, ResilienceSalesClient 
 	}
 
 	public Task<PagedResult<BeerJson>> GetBeersAsync(CancellationToken cancellationToken) =>
-		resilienceSalesClient.GetBeersAsync(cancellationToken);
+		salesClient.GetBeersAsync(cancellationToken);
 
 	public async Task CreateSalesOrderAsync(SalesOrderJson salesOrder, CancellationToken cancellationToken) =>
-			await resilienceSalesClient.PostSalesOrderAsync(salesOrder, cancellationToken);
+			await salesClient.PostSalesOrderAsync(salesOrder, cancellationToken);
 }

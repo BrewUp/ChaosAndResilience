@@ -17,6 +17,8 @@ public static class WarehousesHelper
 		services.AddValidatorsFromAssemblyContaining<SetAvailabilityValidator>();
 		services.AddSingleton<ValidationHandler>();
 
+		services.AddScoped<IMessagesService, MessagesService>();
+
 		services.AddScoped<IWarehousesFacade, WarehousesFacade>();
 		services.AddScoped<IAvailabilityService, AvailabilityService>();
 		services.AddScoped<IQueries<Availability>, AvailabilityQueries>();

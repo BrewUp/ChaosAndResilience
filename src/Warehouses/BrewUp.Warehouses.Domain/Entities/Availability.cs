@@ -44,4 +44,15 @@ public class Availability : AggregateRoot
 	{
 		_quantity = @event.Quantity;
 	}
+
+	internal void RefillBeer(Quantity quantity, Guid correlationId)
+	{
+		quantity = _quantity with { Value = _quantity.Value + quantity.Value };
+		RaiseEvent(new BeerRefilledIntoWarehouse(_beerId, correlationId, _beerName, quantity));
+	}
+
+	private void Apply(BeerRefilledIntoWarehouse @event)
+	{
+		_quantity = @event.Quantity;
+	}
 }
