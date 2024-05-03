@@ -13,5 +13,6 @@ public class UpdateAvailabilityDueToWarehousesNotificationConsumer(IRepository r
 		ILoggerFactory loggerFactory)
 	: CommandConsumerBase<UpdateAvailabilityDueToWarehousesNotification>(repository, connectionFactory, loggerFactory)
 {
-	protected override ICommandHandlerAsync<UpdateAvailabilityDueToWarehousesNotification> HandlerAsync { get; } = new UpdateAvailabilityDueToWarehousesNotificationCommandHandler(repository, loggerFactory);
+	protected override ICommandHandlerAsync<UpdateAvailabilityDueToWarehousesNotification> HandlerAsync { get; } =
+		new UpdateAvailabilityDueToWarehousesNotificationCommandHandler(repository, loggerFactory);
 }

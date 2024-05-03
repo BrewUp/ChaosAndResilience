@@ -17,7 +17,7 @@ public sealed class AvailabilityUpdatedDueToSalesOrderForIntegrationEventHandler
         var correlationId =
             new Guid(@event.UserProperties.FirstOrDefault(u => u.Key.Equals("CorrelationId")).Value.ToString()!);
 
-        AvailabilityUpdatedForNotification availabilityUpdatedForNotification = new(@event.BeerId, correlationId, @event.BeerName, @event.Quantity);
-        await eventBus.PublishAsync(availabilityUpdatedForNotification, cancellationToken);
+        WithdrawlFromWarehouseForSalesOrder integrationEvent = new(@event.BeerId, correlationId, @event.BeerName, @event.Quantity);
+        await eventBus.PublishAsync(integrationEvent, cancellationToken);
     }
 }

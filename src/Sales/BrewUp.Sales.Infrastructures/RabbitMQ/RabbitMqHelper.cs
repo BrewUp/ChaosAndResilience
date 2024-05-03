@@ -52,6 +52,10 @@ public static class RabbitMqHelper
 				loggerFactory),
 			new AvailabilityUpdatedDueToWarehousesNotificationConsumer(serviceProvider.GetRequiredService<IAvailabilityService>(),
 				mufloneConnectionFactory, loggerFactory),
+			new WithdrawlFromWarehouseForSalesOrderConsumer(serviceProvider.GetRequiredService<IQueries<ReadModel.Dtos.Availability>>(),
+				serviceProvider.GetRequiredService<IMessagesService>(),
+				serviceProvider.GetRequiredService<IServiceBus>(),
+				mufloneConnectionFactory, loggerFactory),
 			
 			new CreateBeerDueToAvailabilityLoadedConsumer(repository, mufloneConnectionFactory, loggerFactory),
 			new BeerDueToAvailabilityLoadedCreatedConsumer(serviceProvider.GetRequiredService<IBeersService>(), 
