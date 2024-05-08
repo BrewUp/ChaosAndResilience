@@ -25,7 +25,7 @@ class Sales(FastHttpUser):
 
     @task
     def t(self):
-        with self.rest("GET", "/v1/sales/beers") as resp:
+        with self.rest("GET", "/v1/sales/availabilities") as resp:
             pass
 
 class Warehouses(FastHttpUser):

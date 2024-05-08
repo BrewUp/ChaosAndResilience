@@ -2,10 +2,6 @@
 Y
 )BrewUp.Shared/Contracts/SalesOrderJson.cs,d\2\d200f0359b819210c4c72d61496815979e683117
 Y
-)BrewUp.Shared/Contracts/PaymentDetails.cs,8\d\8dd264b7b7d5a105373fff5696f49f826d4a1860
-Z
-*BrewUp.Shared/Contracts/DeliveryAddress.cs,8\4\84d5913d3b45b6b143e1776e2201d5b33f26f01c
-Y
 )BrewUp.Sales.ReadModel/Dtos/SalesOrder.cs,3\f\3f0f3e14935156cae54f59ed7061216600f3716e
 \
 ,BrewUp.Sales.ReadModel/Dtos/SalesOrderRow.cs,2\8\28d62455ab74962102a1400a059e7417fb3fd5c0
@@ -29,12 +25,8 @@ Q
 !BrewUp.Shared/CustomTypes/City.cs,1\8\189a749a8fa15705d05f7cf249e4388ab641d7c8
 X
 (BrewUp.Shared/CustomTypes/PhoneNumber.cs,2\b\2bf44b6ff75cfb7bfe72842f5b2c0b8ac3066be5
-f
-6BrewUp.Sales.SharedKernel/Commands/CreateSalesOrder.cs,9\f\9fac34833b8c82aec475dcbf19e681cb5d00697a
 p
 @BrewUp.Sales.SharedKernel/Commands/CreateSalesOrderFromPortal.cs,e\1\e1a50758d0b55bb468846c2a2cd0369d8724d40a
-e
-5BrewUp.Sales.SharedKernel/Events/SalesOrderCreated.cs,5\c\5ce1b3461ed376d09eda01d601797b8f50f6ee1e
 o
 ?BrewUp.Sales.SharedKernel/Events/SalesOrderFromPortalCreated.cs,a\0\a0d637a1de350d50770a1b2740f2a58df2bc6e53
 Z
@@ -49,8 +41,6 @@ _
 +BrewUp.Sales.Domain/Helpers/DomainHelper.cs,c\9\c98d52b894f8ad780e045702e6c56df2f5bddbce
 u
 EBrewUp.Sales.Domain/CommandHandlers/CreateSalesOrderCommandHandler.cs,a\1\a1000d00a4e198984d4271d29094ffd5736be584
-r
-BBrewUp.Sales.Domain.Tests/Entities/CreateSalesOrderSuccessfully.cs,8\f\8f7806be19d381e1fb800ee136e4c21120a293fa
 |
 LBrewUp.Sales.Domain.Tests/Entities/CreateSalesOrderFromPortalSuccessfully.cs,6\2\6254ffd9561023e255d6283f9d4d8b5a50ee03c4
 d
@@ -95,8 +85,6 @@ Z
 *BrewUp.Sales.Rest/Modules/MetricsModule.cs,2\c\2c6efd944648d9b1a729a93c59c1237c772c6d3f
 ^
 .BrewUp.Sales.Rest/Modules/RateLimiterModule.cs,f\1\f1916f98d3352add63a86eb4e55fc0d601e401bc
-\
-,BrewUp.Sales.Rest/Modules/RateLimitModule.cs,a\4\a421e2c2862baf2ac25d37ea83197b7c1f7f9a6c
 Z
 *BrewUp.Sales.Rest/BrewUp.Sales.Rest.csproj,c\e\ce587b10e673a82909cb89ec72b519c99b88fbc8
 \
