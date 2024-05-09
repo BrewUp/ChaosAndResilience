@@ -73,8 +73,6 @@ e
 5BrewUp.Sales.Infrastructures/MongoDb/MongoDbHelper.cs,9\5\9583b3a88036188b41de7ae00b7ab2ef4df27680
 b
 2BrewUp.Sales.ReadModel/Helpers/ReadModelHelpers.cs,0\8\08b80e4b79510c1acd61488146a98d69ff5c067a
-k
-;BrewUp.Sales.Infrastructures/Azure/AzureServiceBusHelper.cs,e\e\eebb8fbb4ea5be98a2b5e8fabfed1f247d9d2187
 g
 7BrewUp.Sales.Infrastructures/MongoDb/MongoDbSettings.cs,a\d\adf220398b4d2e1e4c14d204bf0fad1a91e93c89
 ~
