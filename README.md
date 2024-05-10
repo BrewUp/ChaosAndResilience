@@ -23,6 +23,7 @@ To run test, under `locust` folder, run:
 locust -f LocustBrewUp.py
 ```
 Then navigate to [http://localhost:8089](http://localhost:8089).  
+To auto-generate a locust file take a look [here](https://github.com/SvenskaSpel/har2locust)
 
 ## OpenTelemetry
 - Is a vendor-neutral open-source project supported by the <a href="https://www.cncf.io/" target="_blank">Cloud Native Computing Foundation</a> 
