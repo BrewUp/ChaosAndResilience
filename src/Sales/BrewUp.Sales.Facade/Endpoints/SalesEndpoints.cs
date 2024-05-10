@@ -20,11 +20,22 @@ public static class SalesEndpoints
 			.Produces(StatusCodes.Status201Created)
 			.WithName("CreateSalesOrder");
 
-		group.MapGet("/", HandleGetOrders)
-			.Produces(StatusCodes.Status400BadRequest)
-			.Produces(StatusCodes.Status200OK)
-			.RequireRateLimiting(RateLimiting.CurrentRateLimiter)
-			.WithName("GetSalesOrders");
+		if (!string.IsNullOrWhiteSpace(RateLimiting.CurrentRateLimiter))
+		{
+			group.MapGet("/", HandleGetOrders)
+				.Produces(StatusCodes.Status400BadRequest)
+				.Produces(StatusCodes.Status200OK)
+				.RequireRateLimiting(RateLimiting.CurrentRateLimiter)
+				.WithName("GetSalesOrders");	
+		}
+		else
+		{
+			group.MapGet("/", HandleGetOrders)
+				.Produces(StatusCodes.Status400BadRequest)
+				.Produces(StatusCodes.Status200OK)
+				.WithName("GetSalesOrders");	
+		}
+		
 
 		return endpoints;
 	}

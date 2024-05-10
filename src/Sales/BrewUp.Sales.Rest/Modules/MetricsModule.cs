@@ -10,34 +10,26 @@ public class MetricsModule : IModule
 	public IServiceCollection RegisterModule(WebApplicationBuilder builder)
 	{
 		builder.Services.AddOpenTelemetry()
+			// Add Metrics for ASP.NET Core and our custom metrics and export to Prometheus
 			.WithMetrics(meterProviderBuilder =>
 			{
+				// Metrics provider from OpenTelemetry
+				meterProviderBuilder.AddAspNetCoreInstrumentation();
+				meterProviderBuilder.AddAspNetCoreInstrumentation();
+				meterProviderBuilder.AddMeter();
+				// Metrics provides by ASP.NET Core in .NET 8
+				meterProviderBuilder.AddMeter("Microsoft.AspNetCore.Hosting");
+				meterProviderBuilder.AddMeter("Microsoft.AspNetCore.Server.Kestrel");
 				meterProviderBuilder.AddPrometheusExporter();
-
-				meterProviderBuilder.AddMeter("Microsoft.AspNetCore.Hosting",
-					"Microsoft.AspNetCore.Server.Kestrel");
-
-				meterProviderBuilder.AddView("http.server.request.duration",
-					new ExplicitBucketHistogramConfiguration
-					{
-						Boundaries = new[]
-						{
-							0, 0.005, 0.01, 0.025, 0.05,
-							0.075, 0.1, 0.25, 0.5, 0.75, 1, 2.5, 5, 7.5, 10
-						}
-					});
-
-				//meterProviderBuilder.AddView("http.server.active_requests", 
-				//	new )
 			});
-
+		
 		return builder.Services;
 	}
 
 	public IEndpointRouteBuilder MapEndpoints(IEndpointRouteBuilder endpoints)
 	{
 		endpoints.MapPrometheusScrapingEndpoint();
-
+		
 		return endpoints;
 	}
 }

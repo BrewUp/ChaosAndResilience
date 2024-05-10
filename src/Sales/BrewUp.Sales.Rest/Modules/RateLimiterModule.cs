@@ -41,7 +41,7 @@ public class RateLimiterModule : IModule
                 .AddSlidingWindowLimiter(policyName: "sliding", options =>
                 {
                     options.PermitLimit = int.Parse(builder.Configuration["BrewUp:RateLimitSettings:SlidingWindow:PermitLimit"]!);
-                    options.Window = TimeSpan.FromSeconds(int.Parse(builder.Configuration["BrewUp:RateLimitSettings:SlidingWindow:TimeWindowInSeconds"]!));
+                    options.Window = TimeSpan.FromSeconds(int.Parse(builder.Configuration["BrewUp:RateLimitSettings:SlidingWindow:SecondsPerWindow"]!));
                     options.SegmentsPerWindow = int.Parse(builder.Configuration["BrewUp:RateLimitSettings:SlidingWindow:SegmentsPerWindow"]!);
                     options.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
                     options.QueueLimit = int.Parse(builder.Configuration["BrewUp:RateLimitSettings:SlidingWindow:QueueLimit"]!);
