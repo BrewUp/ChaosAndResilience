@@ -6,7 +6,6 @@ namespace ResilienceBlazor.Modules.Sales.Extensions;
 public interface ISalesService
 {
 	Task<PagedResult<SalesOrderJson>> GetSalesOrdersWithResilienceAsync(CancellationToken cancellationToken);
-	Task<PagedResult<SalesOrderJson>> GetSalesOrdersWithoutResilienceAsync(CancellationToken cancellationToken);
 
 	Task<PagedResult<CustomerJson>> GetCustomersAsync(CancellationToken cancellationToken);
 

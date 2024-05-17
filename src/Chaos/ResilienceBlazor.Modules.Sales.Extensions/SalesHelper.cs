@@ -1,12 +1,10 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Http.Resilience;
 using Polly;
-using Polly.Simmy;
-using Polly.Simmy.Fault;
-using Polly.Simmy.Latency;
-using Polly.Simmy.Outcomes;
+using Polly.CircuitBreaker;
+using Polly.Fallback;
+using Polly.Retry;
+using ResilienceBlazor.Modules.Sales.Extensions.Dtos;
 using ResilienceBlazor.Shared.Configuration;
-using System.Net.Http.Headers;
 
 namespace ResilienceBlazor.Modules.Sales.Extensions;
 
@@ -16,106 +14,75 @@ public static class SalesHelper
 	{
 		services.AddScoped<ISalesService, SalesService>();
 
-		var httpClientBuilder = services.AddHttpClient<ResilienceSalesClient>(client =>
-			{
-				client.BaseAddress = new Uri(configuration.BrewUpSalesUri);
-				client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-			});
-
-		// Configure the standard resilience handler
-		httpClientBuilder
-			.AddStandardResilienceHandler()
-			.Configure(options =>
-			{
-				// Update attempt timeout to 1 second
-				options.AttemptTimeout.Timeout = TimeSpan.FromSeconds(1);
-
-				// Update circuit breaker to handle transient errors and InvalidOperationException
-				options.CircuitBreaker.ShouldHandle = args => args.Outcome switch
-				{
-					{ } outcome when HttpClientResiliencePredicates.IsTransient(outcome) => PredicateResult.True(),
-					{ Exception: InvalidOperationException } => PredicateResult.True(),
-					_ => PredicateResult.False()
-				};
-
-				// Update retry strategy to handle transient errors and InvalidOperationException
-				options.Retry.ShouldHandle = args => args.Outcome switch
-				{
-					{ } outcome when HttpClientResiliencePredicates.IsTransient(outcome) => PredicateResult.True(),
-					{ Exception: InvalidOperationException } => PredicateResult.True(),
-					_ => PredicateResult.False()
-				};
-			});
-
-		// Configure the chaos injection
-		httpClientBuilder.AddResilienceHandler("sales-chaos", (pipelineBuilder, context) =>
-		{
-			pipelineBuilder
-				.AddChaosLatency(new ChaosLatencyStrategyOptions
-				{
-					EnabledGenerator = _ => new ValueTask<bool>(true),
-					InjectionRateGenerator = _ => new ValueTask<double>(0.05),
-					Latency = TimeSpan.FromSeconds(5)
-				})
-				.AddChaosFault(new ChaosFaultStrategyOptions
-				{
-					EnabledGenerator = _ => new ValueTask<bool>(true),
-					InjectionRateGenerator = _ => new ValueTask<double>(0.05),
-					FaultGenerator = new FaultGenerator().AddException(() => new InvalidOperationException("Chaos strategy injection for Sales!"))
-				})
-				.AddChaosOutcome(new ChaosOutcomeStrategyOptions<HttpResponseMessage>
-				{
-					EnabledGenerator = _ => new ValueTask<bool>(true),
-					InjectionRateGenerator = _ => new ValueTask<double>(0.05),
-					OutcomeGenerator = new OutcomeGenerator<HttpResponseMessage>().AddResult(() => new HttpResponseMessage(System.Net.HttpStatusCode.InternalServerError))
-				});
-		});
+		services.AddGetSalesOrderResiliencePipeline();
+		services.AddPostSalesOrderResiliencePipeline();
 
 		return services;
 	}
 
-	public static IServiceCollection AddChaosSalesModule(this IServiceCollection services, AppConfiguration configuration)
+	public static IServiceCollection AddGetSalesOrderResiliencePipeline(this IServiceCollection services)
 	{
-		var httpClientBuilder = services.AddHttpClient<ChaosSalesClient>(client =>
-		{
-			client.BaseAddress = new Uri(configuration.BrewUpSalesUri);
-			client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-		});
+		services.AddResiliencePipeline<string, PagedResult<SalesOrderJson>>("brewup-getsalesorders-resilience",
+			resiliencePipelineBuilder =>
+			{
+				resiliencePipelineBuilder
+					.AddRetry(new RetryStrategyOptions<PagedResult<SalesOrderJson>>
+					{
+						Delay = TimeSpan.FromMilliseconds(200),
+						BackoffType = DelayBackoffType.Exponential,
+						MaxRetryAttempts = 3,
+						ShouldHandle = new PredicateBuilder<PagedResult<SalesOrderJson>>()
+							.Handle<ApplicationException>(),
+						OnRetry = retryArguments =>
+						{
+							Console.WriteLine($"Current Attempt: {retryArguments.AttemptNumber}");
 
-		// Configure the chaos injection
-		httpClientBuilder.AddResilienceHandler("sales-chaos", (pipelineBuilder, context) =>
-		{
-			pipelineBuilder
-				.AddChaosLatency(new ChaosLatencyStrategyOptions
-				{
-					EnabledGenerator = _ => new ValueTask<bool>(true),
-					InjectionRateGenerator = _ => new ValueTask<double>(0.05),
-					Latency = TimeSpan.FromSeconds(5)
-				})
-				.AddChaosFault(new ChaosFaultStrategyOptions
-				{
-					EnabledGenerator = _ => new ValueTask<bool>(true),
-					InjectionRateGenerator = _ => new ValueTask<double>(0.05),
-					FaultGenerator = new FaultGenerator().AddException(() => new InvalidOperationException("Chaos strategy injection for Sales!"))
-				})
-				.AddChaosOutcome(new ChaosOutcomeStrategyOptions<HttpResponseMessage>
-				{
-					EnabledGenerator = _ => new ValueTask<bool>(true),
-					InjectionRateGenerator = _ => new ValueTask<double>(0.05),
-					OutcomeGenerator = new OutcomeGenerator<HttpResponseMessage>().AddResult(() => new HttpResponseMessage(System.Net.HttpStatusCode.InternalServerError))
-				});
-		});
+							return ValueTask.CompletedTask;
+						}
+					})
+					.AddFallback(new FallbackStrategyOptions<PagedResult<SalesOrderJson>>
+					{
+						FallbackAction = _ =>
+							Outcome.FromResultAsValueTask(
+								new PagedResult<SalesOrderJson>(Enumerable.Empty<SalesOrderJson>(), 1, 0, 0))
+					})
+					.AddCircuitBreaker(new CircuitBreakerStrategyOptions<PagedResult<SalesOrderJson>>
+					{
+						FailureRatio = 0.5,  // Default value 0.1 => 10%
+						MinimumThroughput = 90,  // Default value 100
+						SamplingDuration = TimeSpan.FromSeconds(25),  // Default value 30 seconds
+						BreakDuration = TimeSpan.FromSeconds(5)
+					});
+			});
 
 		return services;
 	}
 
-	public static IServiceCollection AddSalesModule(this IServiceCollection services, AppConfiguration configuration)
+	public static IServiceCollection AddPostSalesOrderResiliencePipeline(this IServiceCollection services)
 	{
-		var httpClientBuilder = services.AddHttpClient<SalesClient>(client =>
-		{
-			client.BaseAddress = new Uri(configuration.BrewUpSalesUri);
-			client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-		});
+		services.AddResiliencePipeline<string, string>("brewup-postsalesorders-resilience",
+			resiliencePipelineBuilder =>
+			{
+				resiliencePipelineBuilder
+					.AddRetry(new RetryStrategyOptions<string>
+					{
+						Delay = TimeSpan.FromMilliseconds(200),
+						MaxRetryAttempts = 3
+					})
+					.AddFallback(new FallbackStrategyOptions<string>
+					{
+						FallbackAction = _ =>
+							Outcome.FromResultAsValueTask(
+								string.Empty)
+					})
+					.AddCircuitBreaker(new CircuitBreakerStrategyOptions<string>
+					{
+						FailureRatio = 0.5,  // Default value 0.1 => 10%
+						MinimumThroughput = 90,  // Default value 100
+						SamplingDuration = TimeSpan.FromSeconds(25),  // Default value 30 seconds
+						BreakDuration = TimeSpan.FromSeconds(5)
+					});
+			});
 
 		return services;
 	}

@@ -1,12 +1,17 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Polly;
+using Polly.Registry;
 using ResilienceBlazor.Modules.Sales.Extensions;
 using ResilienceBlazor.Modules.Sales.Extensions.Dtos;
+using ResilienceBlazor.Shared.Configuration;
 using ResilienceBlazor.Shared.CustomTypes;
 
 namespace ResilienceBlazor.Modules.Sales;
 
 public class SalesBase : ComponentBase, IDisposable
 {
+	[Inject]
+	ResiliencePipelineProvider<string> PipelineProvider { get; set; } = default!;
 	[Inject] private ISalesService SalesService { get; set; } = default!;
 
 	protected IQueryable<SalesOrderJson> SalesOrders { get; set; } = default!;
@@ -41,21 +46,25 @@ public class SalesBase : ComponentBase, IDisposable
 
 	protected async Task GetSalesOrdersWithResilienceAsync()
 	{
+		// Retrieve the pipeline by name
+		var pipeline = PipelineProvider.GetPipeline<PagedResult<SalesOrderJson>>("brewup-getsalesorders-resilience");
+
 		for (var i = 0; i < 10; i++)
 		{
-			await InvokeSalesOrdersWithResilienceAsync();
+
+			await InvokeSalesOrdersWithResilienceAsync(pipeline);
 			await Task.Delay(100);
 		}
 	}
 
-	protected async Task InvokeSalesOrdersWithResilienceAsync()
+	protected async Task InvokeSalesOrdersWithResilienceAsync(ResiliencePipeline<PagedResult<SalesOrderJson>> pipeline)
 	{
 		if (WaitErrorReset)
 			return;
 
 		try
 		{
-			var result = await SalesService.GetSalesOrdersWithResilienceAsync(CancellationToken.None);
+			var result = await pipeline.ExecuteAsync(async token => await SalesService.GetSalesOrdersWithResilienceAsync(token));
 			SalesOrders = result.Results.AsQueryable();
 
 			ErrorMessage = "Success";
@@ -78,21 +87,24 @@ public class SalesBase : ComponentBase, IDisposable
 
 	protected async Task GetSalesOrdersWithoutResilienceAsync()
 	{
+		// Retrieve the pipeline by name
+		var pipeline = PipelineProvider.GetPipeline<PagedResult<SalesOrderJson>>("brewup-getsalesorders-resilience");
+
 		for (var i = 0; i < 10; i++)
 		{
-			await InvokeSalesOrdersWithoutResilienceAsync();
+			await InvokeSalesOrdersWithoutResilienceAsync(pipeline);
 			await Task.Delay(100);
 		}
 	}
 
-	protected async Task InvokeSalesOrdersWithoutResilienceAsync()
+	protected async Task InvokeSalesOrdersWithoutResilienceAsync(ResiliencePipeline<PagedResult<SalesOrderJson>> pipeline)
 	{
 		if (WaitErrorReset)
 			return;
 
 		try
 		{
-			var result = await SalesService.GetSalesOrdersWithoutResilienceAsync(CancellationToken.None);
+			var result = await pipeline.ExecuteAsync(async token => await SalesService.GetSalesOrdersWithResilienceAsync(token));
 			SalesOrders = result.Results.AsQueryable();
 
 			ErrorMessage = "Success";

@@ -26,10 +26,6 @@ builder.Services.AddBlazoredSessionStorage();
 #region Modules
 builder.Services.AddResilienceSalesModule(builder.Configuration.GetSection("BrewApp:AppConfiguration")
 	.Get<AppConfiguration>()!);
-builder.Services.AddChaosSalesModule(builder.Configuration.GetSection("BrewApp:AppConfiguration")
-	.Get<AppConfiguration>()!);
-builder.Services.AddSalesModule(builder.Configuration.GetSection("BrewApp:AppConfiguration")
-	.Get<AppConfiguration>()!);
 
 builder.Services.AddResilienceWarehousesModule(builder.Configuration.GetSection("BrewApp:AppConfiguration")
 	.Get<AppConfiguration>()!);
