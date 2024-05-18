@@ -64,7 +64,8 @@ public class SalesBase : ComponentBase, IDisposable
 
 		try
 		{
-			var result = await pipeline.ExecuteAsync(async token => await SalesService.GetSalesOrdersWithResilienceAsync(token));
+			var result = await pipeline.ExecuteAsync(
+				async token => await SalesService.GetSalesOrdersWithResilienceAsync(token), CancellationToken.None);
 			SalesOrders = result.Results.AsQueryable();
 
 			ErrorMessage = "Success";
