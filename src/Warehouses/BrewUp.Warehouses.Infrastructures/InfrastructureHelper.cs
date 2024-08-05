@@ -2,6 +2,7 @@
 using BrewUp.Warehouses.Infrastructures.RabbitMq;
 using Microsoft.Extensions.DependencyInjection;
 using Muflone.Eventstore;
+using Muflone.Eventstore.gRPC;
 using Muflone.Saga.Persistence.MongoDb;
 
 namespace BrewUp.Warehouses.Infrastructures;
