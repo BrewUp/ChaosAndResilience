@@ -24,7 +24,8 @@ public static class RabbitMqHelper
 		var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
 
 		var rabbitMqConfiguration = new RabbitMQConfiguration(rabbitMqSettings.Host, rabbitMqSettings.Username,
-			rabbitMqSettings.Password, rabbitMqSettings.ExchangeCommandName, rabbitMqSettings.ExchangeEventName);
+			rabbitMqSettings.Password, rabbitMqSettings.ExchangeCommandName, rabbitMqSettings.ExchangeEventName,
+			"sales");
 		var mufloneConnectionFactory = new MufloneConnectionFactory(rabbitMqConfiguration, loggerFactory);
 		services.AddMufloneTransportRabbitMQ(loggerFactory, rabbitMqConfiguration);
 
